@@ -1,5 +1,5 @@
 //
-//  HomeDataSourceController+navbar.swift
+//  RunDataSourceController+navbar.swift
 //  x181Run
 //
 //  Created by Peter Forward on 6/1/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension HomeDatasourceController {
+extension RunDatasourceController {
     
     func setupNavigationBarItems() {
         

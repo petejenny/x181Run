@@ -8,7 +8,7 @@
 
 import LBTAComponents
 
-class HomeDatasource: Datasource {
+class RunDatasource: Datasource {
     
     let runs: [Run] = {
         let wildcat = Run(runName: "Wildcat Peak", runDate: "11-May-2017", runText: "Half Marathon 3:30:00", medalImage: #imageLiteral(resourceName: "wildcatPeak"))

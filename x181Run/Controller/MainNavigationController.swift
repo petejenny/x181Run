@@ -13,21 +13,21 @@ class MainNavigationController: UINavigationController {
         super.viewDidLoad()
         view.backgroundColor = .green
         
-//        let homeDatasourceController = HomeDatasourceController()
-//        viewControllers = [homeDatasourceController]
+//        let runDatasourceController = RunDatasourceController()
+//        viewControllers = [runDatasourceController]
         
         if isLoggedIn() {
             //assume user is logged in
-        let homeDatasourceController = HomeDatasourceController()
-        viewControllers = [homeDatasourceController]
+        let runDatasourceController = RunDatasourceController()
+        viewControllers = [runDatasourceController]
         } else {
             perform(#selector(showLoginController), with: nil, afterDelay: 0.01)
         }
     }
     
     fileprivate func isLoggedIn() -> Bool {
-        //return true
-        return UserDefaults.standard.isLoggedIn()
+        return true
+        //return UserDefaults.standard.isLoggedIn()
     }
 
     @objc func showLoginController() {

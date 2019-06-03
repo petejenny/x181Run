@@ -1,5 +1,5 @@
 //
-//  HomeDataSourceController.swift
+//  RunDataSourceController.swift
 //  x181Run
 //
 //  Created by Peter Forward on 5/30/19.
@@ -9,7 +9,7 @@
 import LBTAComponents
 
 
-class HomeDatasourceController: DatasourceController {
+class RunDatasourceController: DatasourceController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,8 +17,8 @@ class HomeDatasourceController: DatasourceController {
         
         setupNavigationBarItems()
         
-        let homeDatasource = HomeDatasource()
-        self.datasource = homeDatasource
+        let runDatasource = RunDatasource()
+        self.datasource = runDatasource
     }
     
     
