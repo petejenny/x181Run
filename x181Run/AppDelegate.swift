@@ -20,14 +20,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        //ignore the storyboard
+//        //ignore the storyboard
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//        window?.makeKeyAndVisible()
+//
+//        // Root view controller
+//        window?.rootViewController = UINavigationController(rootViewController: HomeDatasourceController())
+
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        
-        // Root view controller
-        window?.rootViewController = UINavigationController(rootViewController: HomeDatasourceController())
+        window?.rootViewController = MainNavigationController()
+
         
         return true
+        
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
