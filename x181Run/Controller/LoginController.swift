@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+//import Firebase
 
 //let warningColor = UIColor(r: 61, g: 167, b: 244)
 let warningColor = UIColor(r: 255, g: 167, b: 167)
@@ -108,6 +108,7 @@ class LoginController: UIViewController {
         return button
     }()
     
+  
     
     @objc func loginButtonTapped() {
         print("loginButtonTapped")
@@ -123,30 +124,7 @@ class LoginController: UIViewController {
                 return
         }
         
-        Auth.auth().signIn(withEmail: email, password: password, completion: {(user, error) in
-            guard error == nil else {
-                AlertController.showAlert(inViewController: self, title: "Login: Error", message: error!.localizedDescription)
-                return
-            }
-            
-            guard let user = user else {return}
-            print(user.user.email ?? "MISSING EMAIL")
-            print(user.user.displayName ?? "MISSING DISPLAY NAME")
-            print(user.user.uid)
-            
-            // Set the view controller back to the RunDatasourceController
-            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-            guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
-            
-            mainNavigationController.viewControllers = [RunDatasourceController()]
-            
-            UserDefaults.standard.setLoginEmail(value: email)
-            UserDefaults.standard.setLoginPassword(value: password)
-            UserDefaults.standard.setIsLoggedIn(value: true)
-            print("LoginController isLoggedIn=",UserDefaults.standard.isLoggedIn())
-            
-            self.dismiss(animated: true, completion: nil)
-        })
+        firebaseLogin(vc: self, email: email, password: password)
         
     }
     
@@ -154,6 +132,8 @@ class LoginController: UIViewController {
     @objc func signupButtonTapped() {
         print("signupButtonTapped")
      
+        loginEmailTextField.isUserInteractionEnabled = false
+        
         guard let username = signupUsernameTextField.text, username != ""
             else {
                 signupUsernameTextField.becomeFirstResponder()
@@ -200,18 +180,9 @@ class LoginController: UIViewController {
         signupPasswordTextField.backgroundColor = .white
         signupVerifyTextField.backgroundColor =  .white
         
-//        guard let username = signupUsernameTextField.text,
-//            username != "",
-//            let email = signupEmailTextField.text,
-//            email != "",
-//            let password = signupPasswordTextField.text,
-//            password != ""
-//            else {
-//                AlertController.showAlert(inViewController: self, title: "Signup: Missing Info", message: "Please fill out SIgn Up fields")
-//
-//                return
-//        }
+        firebaseSignup(vc: self, username: username, email: email, password: password)
         
+        /*
         Auth.auth().createUser(withEmail: email, password: password, completion: {(user, error) in
             guard error == nil else {
                 AlertController.showAlert(inViewController: self, title: "Signup: Error", message: error!.localizedDescription)
@@ -245,6 +216,7 @@ class LoginController: UIViewController {
                 
             })
         })
+        */
     }
     
     override func viewDidLoad() {
@@ -253,12 +225,6 @@ class LoginController: UIViewController {
         view.backgroundColor = .yellow
         
         navigationItem.title = "Login Controller"
-        //
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .plain, target: self, action: #selector(handleSignOut))
-        
-        
-        
-        //let imageView = UIImageView(image: UIImage(named: "runningIcon"))
         
         view.addSubview(loginEmailTextField)
         view.addSubview(loginPasswordTextField)
@@ -283,9 +249,7 @@ class LoginController: UIViewController {
         signupButton.anchor(signupVerifyTextField.bottomAnchor, left: loginEmailTextField.leftAnchor, bottom: nil, right: loginEmailTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
 
         logoImageView.anchor(signupButton.bottomAnchor, left: loginEmailTextField.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: loginEmailTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-        
     }
-    
 }
 
 class LeftPaddedTextField: UITextField {

@@ -10,6 +10,9 @@
 		0E012F43F94CA071CCD11E17 /* Pods_x181Run.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51BD2A046285034BF6697821 /* Pods_x181Run.framework */; };
 		6A12E3C822A324CA00E63C27 /* RunDataSourceController+navbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E3C722A324CA00E63C27 /* RunDataSourceController+navbar.swift */; };
 		6A94D5CF22A61AD20022BC02 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5CE22A61AD20022BC02 /* AlertController.swift */; };
+		6A94D5D122A64DC20022BC02 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D022A64DC20022BC02 /* Extensions.swift */; };
+		6A94D5D322A6E4150022BC02 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D222A6E4150022BC02 /* FirebaseService.swift */; };
+		6A94D5D522A6EF8F0022BC02 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D422A6EF8F0022BC02 /* User.swift */; };
 		6AB00EC222A58F260032402D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB00EC122A58F260032402D /* LoginController.swift */; };
 		6AB00EC422A590C30032402D /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB00EC322A590C30032402D /* MainNavigationController.swift */; };
 		6AB4246F22A340F3005AFC46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6AB4246E22A340F3005AFC46 /* GoogleService-Info.plist */; };
@@ -29,6 +32,9 @@
 		51BD2A046285034BF6697821 /* Pods_x181Run.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_x181Run.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A12E3C722A324CA00E63C27 /* RunDataSourceController+navbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RunDataSourceController+navbar.swift"; sourceTree = "<group>"; };
 		6A94D5CE22A61AD20022BC02 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
+		6A94D5D022A64DC20022BC02 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		6A94D5D222A6E4150022BC02 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		6A94D5D422A6EF8F0022BC02 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6AB00EC122A58F260032402D /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		6AB00EC322A590C30032402D /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		6AB4246E22A340F3005AFC46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -96,6 +102,7 @@
 			children = (
 				6AF2EF3022A0FD2900BBA7F0 /* RunDatasource.swift */,
 				6AF2EF3322A1DDBD00BBA7F0 /* Run.swift */,
+				6A94D5D422A6EF8F0022BC02 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -112,12 +119,14 @@
 		6AF2EF3222A0FD9100BBA7F0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6A94D5D222A6E4150022BC02 /* FirebaseService.swift */,
 				6AB00EC322A590C30032402D /* MainNavigationController.swift */,
 				6AB00EC122A58F260032402D /* LoginController.swift */,
 				6AF2EF2A22A0B46400BBA7F0 /* RunDataSourceController.swift */,
 				6A12E3C722A324CA00E63C27 /* RunDataSourceController+navbar.swift */,
 				6AB4247022A38146005AFC46 /* UserDefaults+helpers.swift */,
 				6A94D5CE22A61AD20022BC02 /* AlertController.swift */,
+				6A94D5D022A64DC20022BC02 /* Extensions.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -217,18 +226,24 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-x181Run/Pods-x181Run-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/LBTAComponents/LBTAComponents.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TRON/TRON.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LBTAComponents.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TRON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,7 +286,10 @@
 				6AB00EC422A590C30032402D /* MainNavigationController.swift in Sources */,
 				6AF2EF3622A1E3AF00BBA7F0 /* RunCell.swift in Sources */,
 				6AF2EF2F22A0FCBB00BBA7F0 /* RunHeaderFooter.swift in Sources */,
+				6A94D5D522A6EF8F0022BC02 /* User.swift in Sources */,
 				6A12E3C822A324CA00E63C27 /* RunDataSourceController+navbar.swift in Sources */,
+				6A94D5D322A6E4150022BC02 /* FirebaseService.swift in Sources */,
+				6A94D5D122A64DC20022BC02 /* Extensions.swift in Sources */,
 				6AF2EF1722A09FFD00BBA7F0 /* AppDelegate.swift in Sources */,
 				6A94D5CF22A61AD20022BC02 /* AlertController.swift in Sources */,
 				6AB4247122A38146005AFC46 /* UserDefaults+helpers.swift in Sources */,

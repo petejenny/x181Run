@@ -24,11 +24,21 @@ class MainNavigationController: UINavigationController {
     
     fileprivate func isLoggedIn() -> Bool {
         
+        if !UserDefaults.standard.isLoggedIn() {
+            return false
+        }
+            
+        guard let email = UserDefaults.standard.getLoginEmail()
+        else {
+            return false
+        }
+        guard let password = UserDefaults.standard.getLoginPassword()
+            else {
+                return false
+        }
         
-        //UserDefaults.standard.setLoginEmail(value: "wolfman@hotmail.com")
-        //print("**START************")
-        //print(UserDefaults.standard.dictionaryRepresentation())
-        //print("**END**************")
+        
+
         return UserDefaults.standard.isLoggedIn()
     }
 

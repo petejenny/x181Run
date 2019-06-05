@@ -53,11 +53,15 @@ extension RunDatasourceController {
     @objc private func logoutButtonTapped() {
         print("logoutButtonTapped")
         
-        UserDefaults.standard.setIsLoggedIn(value: false)
-        print("RunDatasourceController isLoggedIn=",UserDefaults.standard.isLoggedIn())
+        //UserDefaults.standard.setIsLoggedIn(value: false)
+        
+        firebaseLogout(vc: self)
+        
         
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
+        
+        
     }
     
     private func setupRightNavItems() {
