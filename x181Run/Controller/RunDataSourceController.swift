@@ -8,25 +8,30 @@
 
 import LBTAComponents
 
-
 class RunDatasourceController: DatasourceController {
+    
+    let errorMessageLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Apologies something went wrong.  Please try again later."
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.isHidden = true
+        return label
+    } ()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //collectionView?.backgroundColor = .red
         
+        view.addSubview(errorMessageLabel)
+        errorMessageLabel.fillSuperview()
+        
         setupNavigationBarItems()
         
-        let runDatasource = RunDatasource()
-        self.datasource = runDatasource
-        
-//        fetchRunFeed()
+        MyFireDbService.sharedInstance.myRead(from: .runs, returning: Run.self) {(runs) in
+            self.datasource = MyFireRunDataSource(runs: runs)
+        }
     }
-    
-    
-//    fileprivate func fetchRunFeed() {
-//        
-//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         // Don't leave a gap between the cells
@@ -46,16 +51,13 @@ class RunDatasourceController: DatasourceController {
         } else if indexPath.section == 1 {
             // Section 1 returns a tweet struct
             // Tweet size estimation
-//            guard let tweet = datasource?.item(indexPath) as? Tweet else {return .zero}
-//            let estimatedHeight = estimatedHeightForTest(tweet.message)
-//            return CGSize(width: view.frame.width, height: estimatedHeight + 74)
+            //            guard let tweet = datasource?.item(indexPath) as? Tweet else {return .zero}
+            //            let estimatedHeight = estimatedHeightForTest(tweet.message)
+            //            return CGSize(width: view.frame.width, height: estimatedHeight + 74)
             
             return CGSize(width: view.frame.width, height: 200)
         }
-        
-        
         return CGSize(width: view.frame.width, height: 150)
-        
     }
     
     private func estimatedHeightForTest(_ text: String) -> CGFloat {
@@ -65,7 +67,6 @@ class RunDatasourceController: DatasourceController {
         let estimatedFrame = NSString(string: text).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
         
         return estimatedFrame.height
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -79,9 +80,5 @@ class RunDatasourceController: DatasourceController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         
         collectionView.collectionViewLayout.invalidateLayout()
-        
-
-        
     }
-    
 }

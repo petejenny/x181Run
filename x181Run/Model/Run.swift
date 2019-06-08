@@ -8,9 +8,22 @@
 
 import UIKit
 
-struct Run {
+protocol IdentifiableFirestoreDocId {
+    var id: String? {get set}
+}
+
+struct Run: Codable, IdentifiableFirestoreDocId {
+    var id: String? = nil // default value nil
+    
     let runName: String
     let runDate: String
     let runText: String
-    let medalImage: UIImage
+    //let medalImage: UIImage
+    
+    init(runName: String, runDate: String, runText: String) {
+        self.runName = runName
+        self.runDate = runDate
+        self.runText = runText
+        //self.medalImage = medalImage
+    }
 }

@@ -7,10 +7,6 @@
 //
 
 import UIKit
-//import Firebase
-
-//let warningColor = UIColor(r: 61, g: 167, b: 244)
-let warningColor = UIColor(r: 255, g: 167, b: 167)
 
 class LoginController: UIViewController {
     
@@ -98,7 +94,6 @@ class LoginController: UIViewController {
         return textField
     }()
     
-    
     lazy var signupButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .orange
@@ -107,8 +102,6 @@ class LoginController: UIViewController {
         button.addTarget(self, action: #selector(signupButtonTapped), for: .touchUpInside)
         return button
     }()
-    
-  
     
     @objc func loginButtonTapped() {
         print("loginButtonTapped")
@@ -124,10 +117,9 @@ class LoginController: UIViewController {
                 return
         }
         
-        firebaseLogin(vc: self, email: email, password: password)
+        MyFireLoginService.sharedInstance.login(vc: self, email: email, password: password)
         
     }
-    
     
     @objc func signupButtonTapped() {
         print("signupButtonTapped")
@@ -180,43 +172,8 @@ class LoginController: UIViewController {
         signupPasswordTextField.backgroundColor = .white
         signupVerifyTextField.backgroundColor =  .white
         
-        firebaseSignup(vc: self, username: username, email: email, password: password)
+        MyFireLoginService.sharedInstance.signup(vc: self, username: username, email: email, password: password)
         
-        /*
-        Auth.auth().createUser(withEmail: email, password: password, completion: {(user, error) in
-            guard error == nil else {
-                AlertController.showAlert(inViewController: self, title: "Signup: Error", message: error!.localizedDescription)
-                return
-            }
-            
-            guard let user = user else {return}
-            print(user.user.email ?? "MISSING EMAIL")
-            print(user.user.uid)
-            
-            let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-            changeRequest?.displayName = username
-            changeRequest?.commitChanges(completion: {(error) in
-                guard error == nil else {
-                    AlertController.showAlert(inViewController: self, title: "Signup Username: Error", message: error!.localizedDescription)
-                    return
-                }
-                
-                // Set the view controller back to the RunDatasourceController
-                let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-                guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
-                
-                mainNavigationController.viewControllers = [RunDatasourceController()]
-                
-                UserDefaults.standard.setLoginEmail(value: email)
-                UserDefaults.standard.setLoginPassword(value: password)
-                UserDefaults.standard.setIsLoggedIn(value: true)
-                print("LoginController isLoggedIn=",UserDefaults.standard.isLoggedIn())
-                
-                self.dismiss(animated: true, completion: nil)
-                
-            })
-        })
-        */
     }
     
     override func viewDidLoad() {
@@ -250,16 +207,4 @@ class LoginController: UIViewController {
 
         logoImageView.anchor(signupButton.bottomAnchor, left: loginEmailTextField.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: loginEmailTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
-}
-
-class LeftPaddedTextField: UITextField {
-    
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + 10, y: bounds.origin.y, width: bounds.width + 10, height: bounds.height)
-    }
-    
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + 10, y: bounds.origin.y, width: bounds.width + 10, height: bounds.height)
-    }
-    
 }

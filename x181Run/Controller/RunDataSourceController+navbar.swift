@@ -42,12 +42,14 @@ extension RunDatasourceController {
         logoutButton.setImage(#imageLiteral(resourceName: "logoutIcon").withRenderingMode(.alwaysOriginal), for: .normal)
         logoutButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
-
         
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: addRunButton), UIBarButtonItem(customView: logoutButton)]
     }
     @objc private func addRunButtonTapped() {
         print("addRunButtonTapped")
+        
+        let runDetailController = RunDetailController()
+        present(runDetailController, animated: true, completion: nil)
     }
     
     @objc private func logoutButtonTapped() {
@@ -55,18 +57,16 @@ extension RunDatasourceController {
         
         //UserDefaults.standard.setIsLoggedIn(value: false)
         
-        firebaseLogout(vc: self)
-        
+        MyFireLoginService.sharedInstance.logout(vc: self)
         
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
         
         
+        
     }
     
     private func setupRightNavItems() {
-        
-    
         
         let searchButton = UIButton(type: .system)
         searchButton.setImage(#imageLiteral(resourceName: "search").withRenderingMode(.alwaysOriginal), for: .normal)

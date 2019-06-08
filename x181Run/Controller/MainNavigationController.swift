@@ -27,7 +27,13 @@ class MainNavigationController: UINavigationController {
         if !UserDefaults.standard.isLoggedIn() {
             return false
         }
-            
+        
+//        let runA = Run(runName: "runNameFFF", runDate: "runDateFFF", runText: "runTextF")
+//        MyFireDbService.sharedInstance.myCreate(for: runA, in: .runs)
+//
+//        MyFireDbService.sharedInstance.readRunNumber()
+//        MyFireDbService.sharedInstance.readRuns()
+        
         guard let email = UserDefaults.standard.getLoginEmail()
         else {
             return false
@@ -36,20 +42,10 @@ class MainNavigationController: UINavigationController {
             else {
                 return false
         }
-        
-        
 
         return UserDefaults.standard.isLoggedIn()
     }
 
-//    @objc func showRunDatasourceController() {
-//        let runDatasourceController = RunDatasourceController()
-//        present(runDatasourceController, animated: true, completion: {
-//            //perhaps we'll do something here later
-//            print("Completed showing runDatasourceController")
-//
-//        })
-//    }
     
     @objc func showLoginController() {
         let loginController = LoginController()
@@ -58,6 +54,5 @@ class MainNavigationController: UINavigationController {
             print("Completed login process")
         })
     }
-    
     
 }

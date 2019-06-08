@@ -24,7 +24,7 @@ class runCell: DatasourceCell {
             runNameLabel.text = run.runName
             runDateLabel.text = run.runDate
             runTextView.text = run.runText
-            medalImage.image = run.medalImage
+            //medalImage.image = run.medalImage
         }
     }
     

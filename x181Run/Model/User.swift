@@ -8,16 +8,23 @@
 
 import Foundation
 
-var loggedInUser: User? = nil
+var xloggedInUser: User? = nil
 
 struct User {
-    let username: String
-    let email: String
+    var username: String
+    var email: String
     
     init?(username: String, email: String) {
         self.username = username
         self.email = email
     }
+    
+    mutating func update(username: String, email: String) {
+        self.username = username
+        self.email = email
+    }
+
+    
 }
 
 

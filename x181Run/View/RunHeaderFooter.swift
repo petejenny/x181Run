@@ -1,5 +1,5 @@
 //
-//  Cells.swift
+//  RunHeaderFooter.swift
 //  x181Run
 //
 //  Created by Peter Forward on 5/30/19.
@@ -33,8 +33,10 @@ class RunFooter: DatasourceCell {
 class RunHeader: DatasourceCell {
     
     let textLabel: UILabel = {
-       let label = UILabel()
-        label.text = "Run Details for Peter"
+        let label = UILabel()
+        
+        let username = xloggedInUser?.username ?? "Unknown"
+        label.text="Run Details for " + username
         label.font = UIFont.systemFont(ofSize: 16)
         return label
     } ()

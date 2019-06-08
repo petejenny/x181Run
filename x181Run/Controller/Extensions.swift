@@ -8,6 +8,21 @@
 import Foundation
 import UIKit
 
+//let warningColor = UIColor(r: 61, g: 167, b: 244)
+let warningColor = UIColor(r: 255, g: 167, b: 167)
+
+class LeftPaddedTextField: UITextField {
+    
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.origin.x + 10, y: bounds.origin.y, width: bounds.width + 10, height: bounds.height)
+    }
+    
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.origin.x + 10, y: bounds.origin.y, width: bounds.width + 10, height: bounds.height)
+    }
+    
+}
+
 extension UIViewController {
     class func displaySpinner(onView : UIView) -> UIView {
         let spinnerView = UIView.init(frame: onView.bounds)
@@ -29,4 +44,9 @@ extension UIViewController {
             spinner.removeFromSuperview()
         }
     }
+}
+
+// My error enums.  Conforms to Error
+enum MyError: Error {
+    case encodingError
 }
