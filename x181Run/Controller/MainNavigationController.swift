@@ -15,7 +15,9 @@ class MainNavigationController: UINavigationController {
         
         if isLoggedIn() {
             //assume user is logged in
+            print("----------------invoke RunDatasourceController")
             let runDatasourceController = RunDatasourceController()
+            print("----------------Set viewControllers")
             viewControllers = [runDatasourceController]
         } else {
             perform(#selector(showLoginController), with: nil, afterDelay: 0.01)

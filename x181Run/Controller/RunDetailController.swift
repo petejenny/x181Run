@@ -27,14 +27,14 @@ class RunDetailController: UIViewController {
         return textField
     }()
     
-    let eventDateField: UIDatePicker = {
-        let dateField = UIDatePicker()
-        //dateField.placeholder = "Event Date"
-
-        dateField.layer.borderColor = UIColor.lightGray.cgColor
-        dateField.layer.borderWidth = 1
-        dateField.backgroundColor = .white
-        return dateField
+    let eventDateTextField: LeftPaddedTextField = {
+        let eventDateTextField = LeftPaddedTextField()
+        eventDateTextField.placeholder = "Event Date"
+        //eventDateTextField.datePickerMode = .date
+        eventDateTextField.layer.borderColor = UIColor.lightGray.cgColor
+        eventDateTextField.layer.borderWidth = 1
+        eventDateTextField.backgroundColor = .white
+        return eventDateTextField
     }()
 
     let eventLocationTextField: LeftPaddedTextField = {
@@ -77,13 +77,21 @@ class RunDetailController: UIViewController {
     @objc func addButtonTapped() {
         print("addButtonTapped")
 
-        // Set the view controller back to the RunDatasourceController
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
-        
-        mainNavigationController.viewControllers = [RunDatasourceController()]
-        
-        self.dismiss(animated: true, completion: nil)
+//        // Get the values
+//        let eventName = eventTextField.text
+//        let runDate = eventDateTextField.text
+//        let runText = eventDistanceTextField.text
+//        
+//        let newRun = Run(runName: eventName ?? "No event name entered", runDate: runDate ?? "No run date enetered", runText: runText ?? "No distance provided")
+//        MyFireDbService.sharedInstance.myCreate(for: newRun, in: .runs)
+//        
+//        // Set the view controller back to the RunDatasourceController
+//        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+//        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+//        
+//        mainNavigationController.viewControllers = [RunDatasourceController()]
+//        
+//        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func cancelButtonTapped() {
@@ -107,23 +115,38 @@ class RunDetailController: UIViewController {
         navigationItem.title = "Login Controller"
         
         view.addSubview(eventTextField)
-        view.addSubview(eventDateField)
+        view.addSubview(eventDateTextField)
         view.addSubview(eventLocationTextField)
         view.addSubview(eventDistanceTextField)
         
         view.addSubview(addButton)
         view.addSubview(cancelButton)
         
-        
         view.addSubview(logoImageView)
         
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)
+        eventDateTextField.inputView = datePicker
+        
         eventTextField.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        eventDateField.anchor(eventTextField.bottomAnchor, left: eventTextField.leftAnchor, bottom: nil, right: eventTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
-        eventLocationTextField.anchor(eventDateField.bottomAnchor, left: eventTextField.leftAnchor, bottom: nil, right: eventTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
+        eventDateTextField.anchor(eventTextField.bottomAnchor, left: eventTextField.leftAnchor, bottom: nil, right: eventTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
+        eventLocationTextField.anchor(eventDateTextField.bottomAnchor, left: eventTextField.leftAnchor, bottom: nil, right: eventTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
         eventDistanceTextField.anchor(eventLocationTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 24, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
         addButton.anchor(eventDistanceTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
         cancelButton.anchor(addButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
         
         logoImageView.anchor(cancelButton.bottomAnchor, left: eventTextField.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: eventTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+    }
+    
+    @objc func datePickerValueChanged(sender: UIDatePicker) {
+        let formatter = DateFormatter()
+        
+        formatter.dateStyle = DateFormatter.Style.medium
+        formatter.timeStyle = DateFormatter.Style.none
+        eventDateTextField.text = formatter.string(from: sender.date)
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }

@@ -40,8 +40,8 @@ struct MyFireDbService {
         let dateString = formatter.string(from: currentDateTime)
         
         let runNumber: [String: Any] = ["runNumber": 777,
-                                       "setDate": dateString,
-                                       "setUser": "Peter"]
+                                        "setDate": dateString,
+                                        "setUser": "Peter"]
         //let userReference = Firestore.firestore().collection("users")
         reference(to: .SequenceNumbers).addDocument(data: runNumber)
     }
@@ -61,7 +61,7 @@ struct MyFireDbService {
         do {
             // Exclude the id from the json to ensure we don't update and existing database record
             let json = try encodableObject.toJson(excluding: ["id"])
-             reference(to: collectionReference).addDocument(data: json)
+            reference(to: collectionReference).addDocument(data: json)
             
         } catch {
             print(error)
@@ -69,21 +69,27 @@ struct MyFireDbService {
     }
     
     func myRead<T: Decodable>(from collectionReference: MyFireCollectionRef, returning objectType: T.Type, completion: @escaping ([T]) -> Void) {
+        print("------------Create reference to firebase location")
         reference(to: .runs).addSnapshotListener{(snapshot, _) in
             
             // Confirm that we have a snapshot
             guard let snapshot = snapshot else {return}
-            
+            print("------------We have a snapshot")
             do {
                 // Create new empty objects arrar
+                print("------------Create objects from snapshot")
                 var objects = [T]()
                 
                 // Iterate through documents in snapshot
+                print("------------Iterate through the objects")
                 for document in snapshot.documents {
                     // create object from decoded document
+                    print(">>------------create the object")
+                    print(document.data())
                     let object = try document.decode(as: objectType.self)
                     
                     // Append object into objects array
+                    print(">>------------Append the object")
                     objects.append(object)
                 }
                 
@@ -104,23 +110,23 @@ struct MyFireDbService {
             }
         }
         
-                        MyFireDbService.sharedInstance.myRead(from: .runs, returning: Run.self) {(runs) in
-                            print("Successfully fetched firbase objects count=",runs.count)
-                            print("1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                            print(runs)
-                            print("2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                            for run in runs {
-                                print("------")
-                                print(run)
-                            }
-                            print("2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                            //self.myFireRuns = runs
-                            //self.myFireRuns = runs
-                            myRuns = runs
-                        }
+        MyFireDbService.sharedInstance.myRead(from: .runs, returning: Run.self) {(runs) in
+            print("Successfully fetched firbase objects count=",runs.count)
+            print("1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print(runs)
+            print("2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            for run in runs {
+                print("------")
+                print(run)
+            }
+            print("2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            //self.myFireRuns = runs
+            //self.myFireRuns = runs
+            myRuns = runs
+        }
         
-            return myRuns
-
+        return myRuns
+        
     }
     
     func readRuns() {

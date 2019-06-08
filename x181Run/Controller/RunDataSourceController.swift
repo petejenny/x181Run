@@ -28,7 +28,9 @@ class RunDatasourceController: DatasourceController {
         
         setupNavigationBarItems()
         
+        print("----------------Read runs from Firebase")
         MyFireDbService.sharedInstance.myRead(from: .runs, returning: Run.self) {(runs) in
+            print("---------------set the datasource to the runs that have been read in")
             self.datasource = MyFireRunDataSource(runs: runs)
         }
     }
