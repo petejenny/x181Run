@@ -30,11 +30,11 @@ class MainNavigationController: UINavigationController {
             return false
         }
         
-//        let runA = Run(runName: "runNameFFF", runDate: "runDateFFF", runText: "runTextF")
-//        MyFireDbService.sharedInstance.myCreate(for: runA, in: .runs)
-//
+//        let runA = Run(eventTitle: "eventTitleWWW", eventDate: "runDateWWW", runText: "runTextWWW")
+//        MyFireDbService.sharedInstance.myCreate(for: runA, in: .runEvents)
+
 //        MyFireDbService.sharedInstance.readRunNumber()
-//        MyFireDbService.sharedInstance.readRuns()
+//        MyFireDbService.sharedInstance.oldReadRuns()
         
         guard let email = UserDefaults.standard.getLoginEmail()
         else {

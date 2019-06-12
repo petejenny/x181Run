@@ -12,16 +12,16 @@ import SwiftyJSON
 
 let tronBaseUrl = "https://api.letsbuildthatapp.com"
 
-struct Service {
+struct oldService {
     
     let tron = TRON(baseURL: tronBaseUrl)
     
-    static let sharedInstance = Service()
+    static let sharedInstance = oldService()
     
-    func fetchRunFeed(completion: @escaping (RunDatasource?, Error?) -> ()) {
+    func oldfetchRunFeed(completion: @escaping (oldRunDatasource?, Error?) -> ()) {
         print("Fetching run feed")
         
-        let request: APIRequest<RunDatasource, JSONError> = tron.swiftyJSON.request("/twitter/home")
+        let request: APIRequest<oldRunDatasource, oldJSONError> = tron.swiftyJSON.request("/twitter/home")
         
         request.perform(withSuccess: { (runDatasource) in
             print("Successfully fetched json objects",runDatasource.runs.count)
@@ -33,7 +33,7 @@ struct Service {
         }
     }
     
-    class JSONError: JSONDecodable {
+    class oldJSONError: JSONDecodable {
         required init(json: JSON) throws {
             print("JSON ERROR")
         }

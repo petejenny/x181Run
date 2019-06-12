@@ -11,20 +11,19 @@ import LBTAComponents
 // Renders out run data
 class runCell: DatasourceCell {
     
-    //    override var datasourceItem: Any? {
-    //        didSet {
-    //            runNameLabel.text = datasourceItem as? String
-    //        }
-    //    }
-    
     override var datasourceItem: Any? {
         didSet {
             // Downcast datasource item as run object
             guard let run = datasourceItem as? Run else {return}
-            runNameLabel.text = run.runName
-            runDateLabel.text = run.runDate
-            runTextView.text = run.runText
+            eventTitleLabel.text = run.eventTitle
+            
+            let fireDateString = run.eventDate
+            eventDateLabel.text = fireDateToDisplayDate(fireDate: fireDateString)
+            
+            runTextView.text = run.eventLocation
+            
             //medalImage.image = run.medalImage
+            
         }
     }
     
@@ -36,14 +35,14 @@ class runCell: DatasourceCell {
         return imageView
     } ()
     
-    let runNameLabel: UILabel = {
+    let eventTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Joe Bloggs"
         label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     } ()
     
-    let runDateLabel: UILabel = {
+    let eventDateLabel: UILabel = {
         let label = UILabel()
         label.text = "11-May-2010"
         label.font = UIFont.boldSystemFont(ofSize: 15)
@@ -59,7 +58,7 @@ class runCell: DatasourceCell {
         return textView
     } ()
     
-    lazy var runButton: UIButton = {
+    lazy var infoButton: UIButton = {
         let button = UIButton()
         
         button.layer.borderColor = runThemeColor.cgColor
@@ -72,13 +71,24 @@ class runCell: DatasourceCell {
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
         //button.titleEdgeInsets =
         
-        button.addTarget(self, action: #selector(runButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
         
         return button
     } ()
     
-    @objc func runButtonTapped() {
-    print("run info button invoked")
+    @objc func infoButtonTapped() {
+    
+        guard let thisRun = datasourceItem as? Run else {return}
+        print("infoButtonTapped: " , thisRun.id ?? "** WARNING - Has No ID **")
+        
+        let runDetailController = RunDetailController()
+        //runDetailController.myRunMode = .Read
+        runDetailController.myRunMode = .Update
+        runDetailController.myRun = thisRun
+        
+        let myAppDelegate = UIApplication.shared.delegate as! AppDelegate
+        //myAppDelegate.myRunDatasourceController = self
+        myAppDelegate.myRunDatasourceController!.present(runDetailController, animated: true, completion: nil)
     }
     
     override func setupViews() {
@@ -88,27 +98,25 @@ class runCell: DatasourceCell {
         separatorLineView.isHidden = false
         separatorLineView.backgroundColor = UIColor(r: 230, g: 230, b: 230)
         
-        addSubview(runNameLabel)
+        addSubview(eventTitleLabel)
         addSubview(medalImage)
-        addSubview(runDateLabel)
+        addSubview(eventDateLabel)
         addSubview(runTextView)
-        addSubview(runButton)
+        addSubview(infoButton)
         
         // Medal Image at top left of cell
         medalImage.anchor(self.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 0, widthConstant: 50, heightConstant: 50)
         
         // Run Button
-        runButton.anchor(topAnchor, left: nil, bottom: nil, right: self.rightAnchor, topConstant: 12, leftConstant: 8, bottomConstant: 0, rightConstant: 12, widthConstant: 100, heightConstant: 34)
+        infoButton.anchor(topAnchor, left: nil, bottom: nil, right: self.rightAnchor, topConstant: 12, leftConstant: 8, bottomConstant: 0, rightConstant: 12, widthConstant: 100, heightConstant: 34)
         
         // Run Name
-        runNameLabel.anchor(medalImage.topAnchor, left: medalImage.rightAnchor, bottom: nil, right: runButton.leftAnchor, topConstant: 0, leftConstant: 8, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 20)
+        eventTitleLabel.anchor(medalImage.topAnchor, left: medalImage.rightAnchor, bottom: nil, right: infoButton.leftAnchor, topConstant: 0, leftConstant: 8, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 20)
         
         // Run Date
-        runDateLabel.anchor(runNameLabel.bottomAnchor, left: runNameLabel.leftAnchor, bottom: nil, right: runNameLabel.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 20)
+        eventDateLabel.anchor(eventTitleLabel.bottomAnchor, left: eventTitleLabel.leftAnchor, bottom: nil, right: eventTitleLabel.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 20)
         
         // Run Text
-        runTextView.anchor(runDateLabel.bottomAnchor, left: runDateLabel.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, topConstant: -4, leftConstant: -4, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-        
+        runTextView.anchor(eventDateLabel.bottomAnchor, left: eventDateLabel.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, topConstant: -4, leftConstant: -4, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
 }
-

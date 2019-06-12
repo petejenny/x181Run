@@ -46,16 +46,6 @@ struct MyFireDbService {
         reference(to: .SequenceNumbers).addDocument(data: runNumber)
     }
     
-    func createRun() {
-        
-        
-        let runEntry: [String: Any] = ["runName": "harold",
-                                       "runDate": "18-Mar-2007",
-                                       "runText": "Bay To Breakers"]
-        //let userReference = Firestore.firestore().collection("users")
-        reference(to: .runs).addDocument(data: runEntry)
-    }
-    
     func myCreate<T: Encodable>(for encodableObject: T, in collectionReference: MyFireCollectionRef) {
         
         do {
@@ -70,7 +60,7 @@ struct MyFireDbService {
     
     func myRead<T: Decodable>(from collectionReference: MyFireCollectionRef, returning objectType: T.Type, completion: @escaping ([T]) -> Void) {
         print("------------Create reference to firebase location")
-        reference(to: .runs).addSnapshotListener{(snapshot, _) in
+        reference(to: .runEvents).addSnapshotListener{(snapshot, _) in
             
             // Confirm that we have a snapshot
             guard let snapshot = snapshot else {return}
@@ -81,15 +71,26 @@ struct MyFireDbService {
                 var objects = [T]()
                 
                 // Iterate through documents in snapshot
-                print("------------Iterate through the objects")
+                print("------------Iterate through the documents")
                 for document in snapshot.documents {
                     // create object from decoded document
                     print(">>------------create the object")
+                    print(document.documentID)
                     print(document.data())
+                    
+                    // get the document ID
+                    let documentID = document.documentID
+                    
                     let object = try document.decode(as: objectType.self)
+                    
+                    if collectionReference == .runEvents {
+                        var myRun = object as! Run
+                        myRun.id = documentID
+                    }
                     
                     // Append object into objects array
                     print(">>------------Append the object")
+                    print(object)
                     objects.append(object)
                 }
                 
@@ -102,7 +103,45 @@ struct MyFireDbService {
         }
     }
     
-    func fetchFireRunFeed() -> [Run] {
+    func myUpdate<T: Encodable & IdentifiableFirestoreDocId>(for encodableObject: T, in collectionReference: MyFireCollectionRef) {
+        do {
+            print("++++++Encodable Object++++++")
+            print(encodableObject)
+            print("enode object as json")
+            let json = try encodableObject.toJson(excluding: ["id"])
+            print("+++++json ++++++")
+            print(json)
+            print("ensure encodable object contains ID")
+            guard let id = encodableObject.id else { throw MyError.encodingError}
+            print("do the update")
+            reference(to: collectionReference).document(id).setData(json)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func myDelete<T: IdentifiableFirestoreDocId>(_ identifiableObject: T, in collectionReference: MyFireCollectionRef) {
+        do {
+            guard let id = identifiableObject.id else {throw MyError.encodingError}
+            
+            reference(to: collectionReference).document(id).delete()
+        } catch {
+            print(error)
+        }
+    }
+    
+    //==============================================
+    // Functions used for testing during development
+    //==============================================
+   
+    func oldCreateRun() {
+        let runEntry: [String: Any] = ["eventTitle": "harold",
+                                       "eventDate": "18-Mar-2007",
+                                       "eventLocation": "Bay To Breakers"]
+        
+        reference(to: .runEvents).addDocument(data: runEntry)
+    }
+    func oldFetchFireRunFeed() -> [Run] {
         
         var myRuns = [Run]() {
             didSet {
@@ -110,7 +149,7 @@ struct MyFireDbService {
             }
         }
         
-        MyFireDbService.sharedInstance.myRead(from: .runs, returning: Run.self) {(runs) in
+        MyFireDbService.sharedInstance.myRead(from: .runEvents, returning: Run.self) {(runs) in
             print("Successfully fetched firbase objects count=",runs.count)
             print("1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print(runs)
@@ -126,12 +165,11 @@ struct MyFireDbService {
         }
         
         return myRuns
-        
     }
     
-    func readRuns() {
+    func oldReadRuns() {
         
-        reference(to: .runs).addSnapshotListener { (snapshot, _) in
+        reference(to: .runEvents).addSnapshotListener { (snapshot, _) in
             
             guard let snapshot = snapshot else {return}
             print("AAAAAAAAAAAAAAAAAAAAA")
@@ -142,40 +180,13 @@ struct MyFireDbService {
         }
     }
     
-    func runUpdate() {
+    func oldRunUpdate() {
         
-        reference(to: .runs).document("aDeXNsNXlbsEb4Uh9yaX").setData(["age": 75, "name": "Wally"])
-        
+        reference(to: .runEvents).document("aDeXNsNXlbsEb4Uh9yaX").setData(["age": 75, "name": "Wally"])
     }
     
-    //    func myUpdate<T: Encodable & IdentifiableFirestoreDocId>(for encodableObject: T, in collectionReference: MyFireCollectionRef) {
-    //        do {
-    //
-    //            let json = try encodableObject.toJson(excluding: ["id"])
-    //            guard let id = encodableObject.id else {
-    //                throw MyError.encodingError
-    //            }
-    //            reference(to: collectionReference).document(id).setData(json)
-    //
-    //        } catch {
-    //            print(error)
-    //        }
-    //    }
-    
-    func runDelete() {
-        
+    func oldRunDelete() {
         let runReference = Firestore.firestore().collection("runs")
         runReference.document("aDeXNsNXlbsEb4Uh9yaX").delete()
-        
     }
-    
-    //    func myDelete<T: IdentifiableFirestoreDocId>(_ identifiableObject: T, in collectionReference: MyFireCollectionRef) {
-    //        do {
-    //            guard let id = identifiableObject.id else {throw MyError.encodingError}
-    //
-    //            reference(to: collectionReference).document(id).delete()
-    //        } catch {
-    //            print(error)
-    //        }
-    //    }
 }

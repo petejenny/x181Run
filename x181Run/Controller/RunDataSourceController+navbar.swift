@@ -20,7 +20,7 @@ extension RunDatasourceController {
     
     private func setupRemainingNavItems() {
         
-        let titleImageView = UIImageView(image: #imageLiteral(resourceName: "runningIcon"))
+        let titleImageView = UIImageView(image: #imageLiteral(resourceName: "YellowRunnerIcon"))
         titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         titleImageView.contentMode = .scaleAspectFit
         
@@ -49,6 +49,7 @@ extension RunDatasourceController {
         print("addRunButtonTapped")
         
         let runDetailController = RunDetailController()
+        runDetailController.myRunMode = .Create
         present(runDetailController, animated: true, completion: nil)
     }
     
@@ -61,8 +62,6 @@ extension RunDatasourceController {
         
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
-        
-        
         
     }
     

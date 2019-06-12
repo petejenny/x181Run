@@ -23,13 +23,16 @@ class RunDatasourceController: DatasourceController {
         super.viewDidLoad()
         //collectionView?.backgroundColor = .red
         
+        let myAppDelegate = UIApplication.shared.delegate as! AppDelegate
+        myAppDelegate.myRunDatasourceController = self
+        
         view.addSubview(errorMessageLabel)
         errorMessageLabel.fillSuperview()
         
         setupNavigationBarItems()
         
         print("----------------Read runs from Firebase")
-        MyFireDbService.sharedInstance.myRead(from: .runs, returning: Run.self) {(runs) in
+        MyFireDbService.sharedInstance.myRead(from: .runEvents, returning: Run.self) {(runs) in
             print("---------------set the datasource to the runs that have been read in")
             self.datasource = MyFireRunDataSource(runs: runs)
         }
@@ -47,7 +50,7 @@ class RunDatasourceController: DatasourceController {
             // Section 0 returns user struct
             // BioText size estimation
             guard let run = self.datasource?.item(indexPath) as? Run else { return .zero}
-            let estimatedHeight = estimatedHeightForTest(run.runText)
+            let estimatedHeight = estimatedHeightForTest(run.eventLocation)
             return CGSize(width: view.frame.width, height: estimatedHeight + 66)
             
         } else if indexPath.section == 1 {

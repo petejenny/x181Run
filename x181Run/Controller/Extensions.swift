@@ -50,3 +50,49 @@ extension UIViewController {
 enum MyError: Error {
     case encodingError
 }
+
+extension String {
+    func toDate(withFormat format: String = "yyyy-MM-dd HH:mm:ss")-> Date?{
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Tehran")
+        dateFormatter.locale = Locale(identifier: "fa-IR")
+        dateFormatter.calendar = Calendar(identifier: .gregorian)
+        dateFormatter.dateFormat = format
+        let date = dateFormatter.date(from: self)
+        
+        return date
+    }
+    
+}
+
+extension Date {
+    func toString() -> String {
+     
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.dateFormat = "yyy-MMM-dd"
+        
+        return dateFormatter.string(from: self)
+    }
+    
+    func toStringTime() -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.dateFormat = "HH:mm:ss"
+        
+        return dateFormatter.string(from: self)
+    }
+    
+    func toStringToday() -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.dateFormat = "yyy-MMM-dd"
+        
+        
+        return dateFormatter.string(from: Date())
+    }
+    
+}

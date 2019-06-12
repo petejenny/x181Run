@@ -15,7 +15,10 @@ extension Encodable {
     func toJson(excluding keys: [String] = [String]()) throws -> [String: Any] {
         
         // *** Convert object to data
-        let objectData = try JSONEncoder().encode(self)
+        let testEncoder = JSONEncoder()
+        testEncoder.outputFormatting = .prettyPrinted
+        let objectData = try testEncoder.encode(self)
+        //let objectData1 = try JSONEncoder().encode(self)
         // Now we have data
         
         // *** use json serialization to turn data to a json object

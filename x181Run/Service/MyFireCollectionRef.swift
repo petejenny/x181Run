@@ -11,5 +11,5 @@ import Foundation
 enum MyFireCollectionRef: String {
     case SequenceNumbers
     case runNumber
-    case runs
+    case runEvents
 }

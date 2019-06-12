@@ -15,15 +15,17 @@ protocol IdentifiableFirestoreDocId {
 struct Run: Codable, IdentifiableFirestoreDocId {
     var id: String? = nil // default value nil
     
-    let runName: String
-    let runDate: String
-    let runText: String
+    let eventTitle: String
+    let eventDate: String
+    let eventLocation: String
+    let eventDistance: String
     //let medalImage: UIImage
     
-    init(runName: String, runDate: String, runText: String) {
-        self.runName = runName
-        self.runDate = runDate
-        self.runText = runText
+    init(eventTitle: String, eventDate: String, eventLocation: String, eventDistance: String) {
+        self.eventTitle = eventTitle
+        self.eventDate = eventDate
+        self.eventLocation = eventLocation
+        self.eventDistance = eventDistance
         //self.medalImage = medalImage
     }
 }
