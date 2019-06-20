@@ -14,6 +14,7 @@ extension UserDefaults {
         case isLoggedIn
         case loginEmail
         case loginPassword
+        case sortOrder
     }
     
     func setIsLoggedIn(value: Bool)  {
@@ -41,5 +42,14 @@ extension UserDefaults {
     
     func getLoginPassword() -> String? {
         return UserDefaults.standard.string(forKey: UserDefaultsKeys.loginPassword.rawValue)
+    }
+    
+    func setSortOrder(value: String) {
+        UserDefaults.standard.set(value, forKey: UserDefaultsKeys.sortOrder.rawValue)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func getSortOrder() -> String? {
+        return UserDefaults.standard.string(forKey: UserDefaultsKeys.sortOrder.rawValue) ?? "eventDate"
     }
 }

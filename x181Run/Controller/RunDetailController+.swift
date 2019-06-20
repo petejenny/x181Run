@@ -7,27 +7,54 @@
 //
 
 import UIKit
+import Firebase
 
 extension RunDetailController {
     
-    @objc func todayButtonTapped(_ sender: UIDatePicker) {
-        print ("todayButtonTapped")
+    //MARK: Date Code Here
+    func dateSetupDatePicker() {
+        // Date Picker Code
+        let datePicker = UIDatePicker()
+        datePicker.date = myRunDateAsDate
+        datePicker.datePickerMode = .date
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)
+        eventDateTextField.inputView = datePicker
+        eventDateTextField.inputAccessoryView = dateToolbar
+    }
+    
+    @objc func dateTodayButtonTapped(_ sender: UIDatePicker) {
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        //dateFormatter.dateFormat = "yyy-MMM-dd"
-        dateFormatter.dateFormat = "MMMM dd yyyy"
-        
-        eventDateTextField.text = dateFormatter.string(from: Date())
-        
+        myRunDateAsDate = Date()
+        //print("todayButtonTapped Date=",myRunDateAsDate)
+        eventDateTextField.text = date2DisplayDate(myDate: myRunDateAsDate)
+        //print("todayButtonTapped Display=",eventDateTextField.text ?? "NO DATE")
         eventDateTextField.resignFirstResponder()
     }
     
-    @objc func doneButtonTapped(_ sender: UIDatePicker){
+    @objc func dateDoneButtonTapped(_ sender: UIDatePicker){
         print("doneButtonTapped")
+        //myRunDateAsDate = sender.date
+        //eventDateTextField.text = date2DisplayDate(myDate: myRunDateAsDate)
         eventDateTextField.resignFirstResponder()
     }
     
+    @objc func datePickerValueChanged(sender: UIDatePicker) {
+        
+        let formatter = DateFormatter()
+        
+        formatter.dateStyle = .none
+        formatter.timeStyle = .none
+        //formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        formatter.dateFormat = dispDateFormat
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        
+        myRunDateAsDate = sender.date
+        eventDateTextField.text = date2DisplayDate(myDate: myRunDateAsDate)
+        //eventDateTextField.text = formatter.string(from: sender.date)
+    }
+    
+    //MARK: Process button actions
     @objc func actionButtonTapped() {
         print("actionButtonTapped")
         
@@ -44,7 +71,7 @@ extension RunDetailController {
     }
     
     func doDeleteProcessing() {
-        MyFireDbService.sharedInstance.myDelete(myRun, in: .runEvents)
+        MyFireDbService.sharedInstance.myDelete(myRun1, in: .runEvents)
     }
     
     private func doCreateProcessing() {
@@ -55,7 +82,7 @@ extension RunDetailController {
         let eventDistance = eventDistanceTextField.text
         let fireDate = displayDateToFireDate(displayDate: displayDate!)
         
-        let newRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate ?? "No run date entered", eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided")
+        let newRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate , eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided")
         MyFireDbService.sharedInstance.myCreate(for: newRun, in: .runEvents)
         
         // Set the view controller back to the RunDatasourceController
@@ -71,14 +98,13 @@ extension RunDetailController {
         print("doUpdateProcessing")
         
         let eventName = eventTitleTextField.text
-        let displayDate = eventDateTextField.text
+        //let displayDate = eventDateTextField.text
         let eventLocation = eventLocationTextField.text
         let eventDistance = eventDistanceTextField.text
-        let fireDate = displayDateToFireDate(displayDate: displayDate!)
-        let runText = eventDistanceTextField.text
+        let fireDate = date2FireDate(myDate: myRunDateAsDate)
         
-        var updatedRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate ?? "No run date enetered", eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided")
-        updatedRun.id = myRun.id
+        var updatedRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate , eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided")
+        updatedRun.id = myRun1.id
         
         MyFireDbService.sharedInstance.myUpdate(for: updatedRun, in: .runEvents)
         
@@ -88,15 +114,23 @@ extension RunDetailController {
         
         mainNavigationController.viewControllers = [RunDatasourceController()]
         
+        if imageUpdated {
+            let imageName = UUID().uuidString
+            // Get the documents directory for the application
+            let imagePath = getDocumentsDirectory().appendingPathComponent(imageName)
+            
+            MyFireStorageService.sharedInstance.myFireImageUpload(myImage: medalImage.image! , myImageRef: imageName)
+        }
+        
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc func cancelButtonTapped() {
         print("cancelButtonTapped")
         
-        // For debugging only
-        let runDate: String = eventDateTextField.text ?? ""
-        print("Run Date=",runDate)
+//        // For debugging only
+//        let runDate: String = eventDateTextField.text ?? ""
+//        print("Run Date=",runDate)
         
         // Set the view controller back to the RunDatasourceController
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
@@ -107,57 +141,57 @@ extension RunDetailController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc func datePickerValueChanged(sender: UIDatePicker) {
-        
-        let formatter = DateFormatter()
-        
-        formatter.dateStyle = .none
-        formatter.timeStyle = .none
-        //formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        formatter.dateFormat = "MMMM dd yyyy"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
 
-        eventDateTextField.text = formatter.string(from: sender.date)
-    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+
+    //MARK: Image Code Here
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        //let tappedImage = tapGestureRecognizer.view as! UIImage
+        
+        // UIImagePickerController is a view controller that lets a user pick media from their photo library
+        let imagePickerController = UIImagePickerController()
+        
+        //imagePickerController.allowsEditing = true
+        
+        // only allow photos to be picked, not taken
+        imagePickerController.sourceType = .photoLibrary
+        
+        // Make sure ViewController is notified when the user picks an image.
+        imagePickerController.delegate = self 
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        // The info dictionary may contain multiple representations of the image.  You want to use the original.
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else
+        {
+            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+        }
+        
+        // Get the filename
+//        if let asset = info[UIImagePickerControllerPHAsset] as? PHAsset {
+//            let resultResource = PHAssetResource.assetResources(for: asset)
+//            print("FILENAME=",resultResource.firs.value(forKey: "filename"))
+//        }
+
+
+        
+        // set photoImageView to display thee select image.
+        medalImage.image = selectedImage
+        
+        imageUpdated = true
+        
+        // Dismiss the picker.
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
 }
 
 
-//let fireDateString = run.eventDate
-//let fireDateFormatter = DateFormatter()
-//fireDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-//let fireDateValue = fireDateFormatter.date(from: fireDateString)
-//let displayDateFormatter = DateFormatter()
-//displayDateFormatter.dateFormat = "MMM dd YYYY"
-////let displayDateString = displayDateFormatter.string(from: fireDateValue!)
-//let displayDateString = "July 11 2019"
-//eventDateLabel.text = displayDateString
-
-
-let fireDateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-let dispDateFormat = "MMM dd YYYY"
-
- func fireDateToDisplayDate(fireDate: String) -> String {
-    let formatter1 = DateFormatter()
-    formatter1.dateFormat = fireDateFormat
-    let dateValue = formatter1.date(from: fireDate)
-    
-    let formatter2 = DateFormatter()
-    formatter2.dateFormat = dispDateFormat
-    let dateString = formatter2.string(from: dateValue!)
-    return dateString
-}
-
- func displayDateToFireDate(displayDate: String) -> String {
-    let formatter1 = DateFormatter()
-    formatter1.dateFormat = dispDateFormat
-    let dateValue = formatter1.date(from: displayDate)
-    
-    let formatter2 = DateFormatter()
-    formatter2.dateFormat = fireDateFormat
-    let dateString = formatter2.string(from: dateValue!)
-    
-    return dateString
-}

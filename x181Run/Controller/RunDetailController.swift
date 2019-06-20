@@ -6,16 +6,26 @@
 //  Copyright © 2019 Peter Forward. All rights reserved.
 //
 
-import UIKit
+//import UIKit
+import LBTAComponents
 
-class RunDetailController: UIViewController {
+class RunDetailController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var myRunMode: runMode = .Read
-    var myRun = Run(eventTitle: "none", eventDate: "none", eventLocation: "none", eventDistance: "none")
+    var myRun1 = Run(eventTitle: "none", eventDate: "none", eventLocation: "none", eventDistance: "none")
+    var myRunDateAsDate: Date = Date()
+    var imageUpdated: Bool = false
     
-    let logoImageView: UIImageView = {
-        let image = UIImage(named: "cartoonRunner")
-        let imageView = UIImageView(image: image)
+//    let logoImageView: UIImageView = {
+//        let image = UIImage(named: "cartoonRunner")
+//        let imageView = UIImageView(image: image)
+//        imageView.contentMode = .scaleAspectFit
+//        return imageView
+//    }()
+    
+    let logoImageView: CachedImageView = {
+        let imageView = CachedImageView()
+        imageView.image = #imageLiteral(resourceName: "cartoonRunner")
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -31,13 +41,13 @@ class RunDetailController: UIViewController {
     }()
     
     let eventDateTextField: LeftPaddedTextField = {
-        let eventDateTextField = LeftPaddedTextField()
-        eventDateTextField.placeholder = "Event Date"
-        //eventDateTextField.datePickerMode = .date
-        eventDateTextField.layer.borderColor = UIColor.lightGray.cgColor
-        eventDateTextField.layer.borderWidth = 1
-        eventDateTextField.backgroundColor = .white
-        return eventDateTextField
+        let textField = LeftPaddedTextField()
+        textField.placeholder = "Event Date"
+        //textField.datePickerMode = .date
+        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderWidth = 1
+        textField.backgroundColor = .white
+        return textField
     }()
     
     let eventLocationTextField: LeftPaddedTextField = {
@@ -68,6 +78,31 @@ class RunDetailController: UIViewController {
         return button
     }()
     
+//    let medalImage: UIImageView  = {
+//        let imageView = UIImageView()
+//        imageView.image = #imageLiteral(resourceName: "wildcatPeak")
+//        imageView.layer.cornerRadius = 15
+//        imageView.layer.masksToBounds = true
+//        return imageView
+//    } ()
+    
+    let medalImage: CachedImageView  = {
+        let imageView = CachedImageView()
+        imageView.image = #imageLiteral(resourceName: "wildcatPeak")
+        imageView.layer.cornerRadius = 15
+        imageView.layer.masksToBounds = true
+        return imageView
+    } ()
+    
+    //    let profileImageView: CachedImageView = {
+    //        let imageView = CachedImageView()
+    //        imageView.image = #imageLiteral(resourceName: "profile_image")
+    //        //imageView.backgroundColor = .red
+    //        imageView.layer.cornerRadius = 5
+    //        imageView.layer.masksToBounds = true
+    //        return imageView
+    //    }()
+    
     lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .orange
@@ -91,8 +126,8 @@ class RunDetailController: UIViewController {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
         toolbar.barStyle = .blackTranslucent
         toolbar.tintColor = .white
-        let todayButton = UIBarButtonItem(title: "Today", style: .plain, target: self, action: #selector(todayButtonTapped(_:)))
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped(_:)))
+        let todayButton = UIBarButtonItem(title: "Today", style: .plain, target: self, action: #selector(dateTodayButtonTapped(_:)))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dateDoneButtonTapped(_:)))
         let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width/3, height: 40))
         label.text = "select a date"
@@ -111,14 +146,20 @@ class RunDetailController: UIViewController {
         
         view.backgroundColor = .yellow
         
-        print("Run Mode=", myRunMode)
+        //print("Run Mode=", myRunMode)
         
-        navigationItem.title = "Login Controller"
+        navigationItem.title = "Run Detail Controller"
+        
+        //MARK: Tap Guesture for medal image
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        medalImage.isUserInteractionEnabled = true
+        medalImage.addGestureRecognizer(tapGestureRecognizer)
         
         view.addSubview(eventTitleTextField)
         view.addSubview(eventDateTextField)
         view.addSubview(eventLocationTextField)
         view.addSubview(eventDistanceTextField)
+        view.addSubview(medalImage)
         
         view.addSubview(actionButton)
         view.addSubview(deleteButton)
@@ -133,32 +174,34 @@ class RunDetailController: UIViewController {
             eventDistanceTextField.isEnabled = false
             actionButton.isHidden = true
             
-            eventTitleTextField.text = myRun.eventTitle
-            eventDateTextField.text = myRun.eventDate
-            eventLocationTextField.text = myRun.eventLocation
-            eventDistanceTextField.text = myRun.eventDistance
+            eventTitleTextField.text = myRun1.eventTitle
+            myRunDateAsDate = fireDate2Date(fireDateString: myRun1.eventDate)
+            eventDateTextField.text = date2DisplayDate(myDate: myRunDateAsDate)
+            eventLocationTextField.text = myRun1.eventLocation
+            eventDistanceTextField.text = myRun1.eventDistance
             
         } else if myRunMode == .Update {
-            eventTitleTextField.text = myRun.eventTitle
-            eventDateTextField.text = myRun.eventDate
-            eventLocationTextField.text = myRun.eventLocation
-            eventDistanceTextField.text = myRun.eventDistance
+            eventTitleTextField.text = myRun1.eventTitle
+            myRunDateAsDate = fireDate2Date(fireDateString: myRun1.eventDate)
+            eventDateTextField.text = date2DisplayDate(myDate: myRunDateAsDate)
+            eventLocationTextField.text = myRun1.eventLocation
+            eventDistanceTextField.text = myRun1.eventDistance
             
             deleteButton.isHidden = false
         }
         
-        // Date Picker Code
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date
-        datePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)
-        eventDateTextField.inputView = datePicker
-        eventDateTextField.inputAccessoryView = dateToolbar
+        dateSetupDatePicker()
+        
+
         
         eventTitleTextField.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
         eventDateTextField.anchor(eventTitleTextField.bottomAnchor, left: eventTitleTextField.leftAnchor, bottom: nil, right: eventTitleTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
         eventLocationTextField.anchor(eventDateTextField.bottomAnchor, left: eventTitleTextField.leftAnchor, bottom: nil, right: eventTitleTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
         eventDistanceTextField.anchor(eventLocationTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 24, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        actionButton.anchor(eventDistanceTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
+        medalImage.anchor(eventDistanceTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 24, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 150)
+        
+        
+        actionButton.anchor(medalImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
         
         if myRunMode == .Update {
             // Set the date for the datepicker
@@ -174,6 +217,5 @@ class RunDetailController: UIViewController {
         
         logoImageView.anchor(cancelButton.bottomAnchor, left: eventTitleTextField.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: eventTitleTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
-    
     
 }

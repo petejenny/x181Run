@@ -30,21 +30,6 @@ class MainNavigationController: UINavigationController {
             return false
         }
         
-//        let runA = Run(eventTitle: "eventTitleWWW", eventDate: "runDateWWW", runText: "runTextWWW")
-//        MyFireDbService.sharedInstance.myCreate(for: runA, in: .runEvents)
-
-//        MyFireDbService.sharedInstance.readRunNumber()
-//        MyFireDbService.sharedInstance.oldReadRuns()
-        
-        guard let email = UserDefaults.standard.getLoginEmail()
-        else {
-            return false
-        }
-        guard let password = UserDefaults.standard.getLoginPassword()
-            else {
-                return false
-        }
-
         return UserDefaults.standard.isLoggedIn()
     }
 

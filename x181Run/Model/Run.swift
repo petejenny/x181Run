@@ -19,6 +19,7 @@ struct Run: Codable, IdentifiableFirestoreDocId {
     let eventDate: String
     let eventLocation: String
     let eventDistance: String
+    //let eventImageUrl: String
     //let medalImage: UIImage
     
     init(eventTitle: String, eventDate: String, eventLocation: String, eventDistance: String) {
@@ -26,6 +27,7 @@ struct Run: Codable, IdentifiableFirestoreDocId {
         self.eventDate = eventDate
         self.eventLocation = eventLocation
         self.eventDistance = eventDistance
+        //self.eventImageUrl = eventImageUrl
         //self.medalImage = medalImage
     }
 }

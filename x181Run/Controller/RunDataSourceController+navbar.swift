@@ -84,9 +84,16 @@ extension RunDatasourceController {
     }
     @objc private func searchButtonTapped(sender: UIButton) {
         print("searchButtonTapped",sender.tag)
+        
+        let eventFilterController = EventFilterController()
+        eventFilterController.defaultSortField = "eventDate"
+        present(eventFilterController, animated: true, completion: nil)
     }
     
     @objc private func userInfoButtonTapped(sender: UIButton) {
         print("userInfoButtonTapped",sender.tag)
+        
+        let userDetailController = UserDetailController()
+        present(userDetailController, animated: true, completion: nil)
     }
 }

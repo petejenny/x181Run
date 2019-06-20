@@ -9,6 +9,7 @@
 import LBTAComponents
 
 let runThemeColor = UIColor(r: 61, g: 167, b: 244)
+let runLightYellowColor = UIColor(r: 255, g: 255, b: 210)
 
 class RunFooter: DatasourceCell {
     
@@ -23,7 +24,7 @@ class RunFooter: DatasourceCell {
     override func setupViews() {
         super.setupViews()
         
-        backgroundColor = UIColor(r: 255, g: 255, b: 210)
+        backgroundColor = runLightYellowColor
         
         addSubview(textLabel)
         textLabel.anchor(topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, topConstant: 0, leftConstant: 12, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)

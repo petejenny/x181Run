@@ -84,7 +84,8 @@ class runCell: DatasourceCell {
         let runDetailController = RunDetailController()
         //runDetailController.myRunMode = .Read
         runDetailController.myRunMode = .Update
-        runDetailController.myRun = thisRun
+        runDetailController.myRun1 = thisRun
+        //RunDetailController.myRunDateAsDate = fireDate2Date(fireDate: thisRun.eventDate)
         
         let myAppDelegate = UIApplication.shared.delegate as! AppDelegate
         //myAppDelegate.myRunDatasourceController = self
@@ -119,4 +120,5 @@ class runCell: DatasourceCell {
         // Run Text
         runTextView.anchor(eventDateLabel.bottomAnchor, left: eventDateLabel.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, topConstant: -4, leftConstant: -4, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
+    
 }

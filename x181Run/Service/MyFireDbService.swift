@@ -15,12 +15,30 @@ struct MyFireDbService {
     
     //let runReference = Database.database().reference().child("runs")
     
-    private func reference(to myCollectionReference: MyFireCollectionRef) -> CollectionReference {
-        return Firestore.firestore().collection(myCollectionReference.rawValue)
+    private func myDbReference(to myCollectionReference: MyFireCollectionRef) -> CollectionReference {
+        
+        //
+        var collectionPath: String
+        if myCollectionReference == .runEvents {
+            collectionPath = "/users/" + (Auth.auth().currentUser?.uid)! + "/events"
+        } else {
+            collectionPath = myCollectionReference.rawValue
+        }
+        
+        let myDataRef = Firestore.firestore().collection(collectionPath)
+        
+        //var myDataRef = Firestore.firestore().collection(collectionReference.rawValue)
+        //return Firestore.firestore().collection(myCollectionReference.rawValue)
+//        if myCollectionReference == .runEvents {
+//            myDataRef.order(by: "eventDate").limit(to: 2)
+//        }
+        
+        return myDataRef
+    
     }
     
     func readRunNumber() {
-        reference(to: .SequenceNumbers).addSnapshotListener { (snapshot, _) in
+        myDbReference(to: .SequenceNumbers).addSnapshotListener { (snapshot, _) in
             
             guard let snapshot = snapshot else {return}
             print("#11111111111111111")
@@ -43,15 +61,17 @@ struct MyFireDbService {
                                         "setDate": dateString,
                                         "setUser": "Peter"]
         //let userReference = Firestore.firestore().collection("users")
-        reference(to: .SequenceNumbers).addDocument(data: runNumber)
+        myDbReference(to: .SequenceNumbers).addDocument(data: runNumber)
     }
     
     func myCreate<T: Encodable>(for encodableObject: T, in collectionReference: MyFireCollectionRef) {
         
         do {
             // Exclude the id from the json to ensure we don't update and existing database record
-            let json = try encodableObject.toJson(excluding: ["id"])
-            reference(to: collectionReference).addDocument(data: json)
+            var json = try encodableObject.toJson(excluding: ["id"])
+            // Include the userId
+            json["UserId"] = Auth.auth().currentUser?.uid
+            myDbReference(to: collectionReference).addDocument(data: json)
             
         } catch {
             print(error)
@@ -60,7 +80,24 @@ struct MyFireDbService {
     
     func myRead<T: Decodable>(from collectionReference: MyFireCollectionRef, returning objectType: T.Type, completion: @escaping ([T]) -> Void) {
         print("------------Create reference to firebase location")
-        reference(to: .runEvents).addSnapshotListener{(snapshot, _) in
+        
+        //let myDataRef = Firestore.firestore().collection(collectionReference.rawValue)
+       
+        //let myDataRef = Firestore.firestore().collection("/users/l9eaNKDhnTTnOuYqJvhBMALzzPG3/events")
+        
+        //var myDataRef = Firestore.firestore().collection(collectionReference.rawValue)
+        //return Firestore.firestore().collection(myCollectionReference.rawValue)
+//        if collectionReference == .runEvents {
+//            myDataRef.order(by: "eventDate").limit(to: 2)
+//        }
+        let test = myDbReference(to: collectionReference)
+        
+        let query = test.order(by: UserDefaults.standard.getSortOrder()! )
+        
+        //myDbReference(to: collectionReference).addSnapshotListener{(snapshot, _) in
+        query.addSnapshotListener{(snapshot, _) in
+            
+            //myDataRef.addSnapshotListener{(snapshot, _) in
             
             // Confirm that we have a snapshot
             guard let snapshot = snapshot else {return}
@@ -105,16 +142,21 @@ struct MyFireDbService {
     
     func myUpdate<T: Encodable & IdentifiableFirestoreDocId>(for encodableObject: T, in collectionReference: MyFireCollectionRef) {
         do {
-            print("++++++Encodable Object++++++")
-            print(encodableObject)
-            print("enode object as json")
-            let json = try encodableObject.toJson(excluding: ["id"])
-            print("+++++json ++++++")
-            print(json)
-            print("ensure encodable object contains ID")
+            //print("++++++Encodable Object++++++")
+            //print(encodableObject)
+            //print("enode object as json")
+            
+            var json = try encodableObject.toJson(excluding: ["id"])
+            
+            if collectionReference == .runEvents {
+                json["UserId"] = Auth.auth().currentUser?.uid
+                print(json)
+            }
+
+            //print("ensure encodable object contains ID")
             guard let id = encodableObject.id else { throw MyError.encodingError}
-            print("do the update")
-            reference(to: collectionReference).document(id).setData(json)
+            //print("do the update")
+            myDbReference(to: collectionReference).document(id).setData(json)
         } catch {
             print(error)
         }
@@ -124,7 +166,7 @@ struct MyFireDbService {
         do {
             guard let id = identifiableObject.id else {throw MyError.encodingError}
             
-            reference(to: collectionReference).document(id).delete()
+            myDbReference(to: collectionReference).document(id).delete()
         } catch {
             print(error)
         }
@@ -139,7 +181,7 @@ struct MyFireDbService {
                                        "eventDate": "18-Mar-2007",
                                        "eventLocation": "Bay To Breakers"]
         
-        reference(to: .runEvents).addDocument(data: runEntry)
+        myDbReference(to: .runEvents).addDocument(data: runEntry)
     }
     func oldFetchFireRunFeed() -> [Run] {
         
@@ -148,7 +190,7 @@ struct MyFireDbService {
                 print("Hello 1111")
             }
         }
-        
+
         MyFireDbService.sharedInstance.myRead(from: .runEvents, returning: Run.self) {(runs) in
             print("Successfully fetched firbase objects count=",runs.count)
             print("1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -163,14 +205,14 @@ struct MyFireDbService {
             //self.myFireRuns = runs
             myRuns = runs
         }
-        
+
         return myRuns
     }
-    
+
     func oldReadRuns() {
-        
-        reference(to: .runEvents).addSnapshotListener { (snapshot, _) in
-            
+
+        myDbReference(to: .runEvents).addSnapshotListener { (snapshot, _) in
+
             guard let snapshot = snapshot else {return}
             print("AAAAAAAAAAAAAAAAAAAAA")
             for document in snapshot.documents {
@@ -179,10 +221,10 @@ struct MyFireDbService {
             print("ZZZZZZZZZZZZZZZZZZZ")
         }
     }
-    
+
     func oldRunUpdate() {
-        
-        reference(to: .runEvents).document("aDeXNsNXlbsEb4Uh9yaX").setData(["age": 75, "name": "Wally"])
+
+        myDbReference(to: .runEvents).document("aDeXNsNXlbsEb4Uh9yaX").setData(["age": 75, "name": "Wally"])
     }
     
     func oldRunDelete() {
