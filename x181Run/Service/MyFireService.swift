@@ -6,6 +6,8 @@
 //  Copyright © 2019 Peter Forward. All rights reserved.
 //
 
-import Foundation
+import Firebase
 
-
+var myImageReference: StorageReference {
+    return Storage.storage().reference().child("/users/" + (Auth.auth().currentUser?.uid)! + "/events")
+}

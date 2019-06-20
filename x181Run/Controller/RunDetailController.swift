@@ -12,7 +12,7 @@ import LBTAComponents
 class RunDetailController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var myRunMode: runMode = .Read
-    var myRun1 = Run(eventTitle: "none", eventDate: "none", eventLocation: "none", eventDistance: "none")
+    var myRun1 = Run(eventTitle: "none", eventDate: "none", eventLocation: "none", eventDistance: "none", eventImage: "none")
     var myRunDateAsDate: Date = Date()
     var imageUpdated: Bool = false
     

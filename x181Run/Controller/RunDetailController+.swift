@@ -80,9 +80,10 @@ extension RunDetailController {
         let displayDate = eventDateTextField.text
         let eventLocation = eventLocationTextField.text
         let eventDistance = eventDistanceTextField.text
+        let eventImage = "None"
         let fireDate = displayDateToFireDate(displayDate: displayDate!)
         
-        let newRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate , eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided")
+        let newRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate , eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided", eventImage: eventImage)
         MyFireDbService.sharedInstance.myCreate(for: newRun, in: .runEvents)
         
         // Set the view controller back to the RunDatasourceController
@@ -101,9 +102,14 @@ extension RunDetailController {
         //let displayDate = eventDateTextField.text
         let eventLocation = eventLocationTextField.text
         let eventDistance = eventDistanceTextField.text
+        var eventImage = "None"
         let fireDate = date2FireDate(myDate: myRunDateAsDate)
         
-        var updatedRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate , eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided")
+        if imageUpdated {
+            eventImage = UUID().uuidString
+        }
+        
+        var updatedRun = Run(eventTitle: eventName ?? "No event name entered", eventDate: fireDate , eventLocation: eventLocation ?? "No location provided", eventDistance: eventDistance ?? "No distance provided", eventImage: eventImage)
         updatedRun.id = myRun1.id
         
         MyFireDbService.sharedInstance.myUpdate(for: updatedRun, in: .runEvents)
@@ -115,11 +121,10 @@ extension RunDetailController {
         mainNavigationController.viewControllers = [RunDatasourceController()]
         
         if imageUpdated {
-            let imageName = UUID().uuidString
             // Get the documents directory for the application
-            let imagePath = getDocumentsDirectory().appendingPathComponent(imageName)
+            let imagePath = getDocumentsDirectory().appendingPathComponent(eventImage)
             
-            MyFireStorageService.sharedInstance.myFireImageUpload(myImage: medalImage.image! , myImageRef: imageName)
+            MyFireStorageService.sharedInstance.myFireImageUpload(myImage: medalImage.image! , myImageRef: eventImage)
         }
         
         self.dismiss(animated: true, completion: nil)

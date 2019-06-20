@@ -22,7 +22,6 @@
 		6A94D5D122A64DC20022BC02 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D022A64DC20022BC02 /* Extensions.swift */; };
 		6A94D5D322A6E4150022BC02 /* MyFireLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D222A6E4150022BC02 /* MyFireLoginService.swift */; };
 		6A94D5D522A6EF8F0022BC02 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D422A6EF8F0022BC02 /* User.swift */; };
-		6A94D5D822A77A2B0022BC02 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D722A77A2B0022BC02 /* Service.swift */; };
 		6A94D5DA22A83B5F0022BC02 /* MyFireDbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A94D5D922A83B5F0022BC02 /* MyFireDbService.swift */; };
 		6AB00EC222A58F260032402D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB00EC122A58F260032402D /* LoginController.swift */; };
 		6AB00EC422A590C30032402D /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB00EC322A590C30032402D /* MainNavigationController.swift */; };
@@ -36,7 +35,6 @@
 		6AF2EF2122A09FFE00BBA7F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AF2EF1F22A09FFE00BBA7F0 /* LaunchScreen.storyboard */; };
 		6AF2EF2B22A0B46400BBA7F0 /* RunDataSourceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF2EF2A22A0B46400BBA7F0 /* RunDataSourceController.swift */; };
 		6AF2EF2F22A0FCBB00BBA7F0 /* RunHeaderFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF2EF2E22A0FCBB00BBA7F0 /* RunHeaderFooter.swift */; };
-		6AF2EF3122A0FD2900BBA7F0 /* oldRunDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF2EF3022A0FD2900BBA7F0 /* oldRunDatasource.swift */; };
 		6AF2EF3422A1DDBD00BBA7F0 /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF2EF3322A1DDBD00BBA7F0 /* Run.swift */; };
 		6AF2EF3622A1E3AF00BBA7F0 /* RunCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF2EF3522A1E3AF00BBA7F0 /* RunCell.swift */; };
 /* End PBXBuildFile section */
@@ -58,7 +56,6 @@
 		6A94D5D022A64DC20022BC02 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6A94D5D222A6E4150022BC02 /* MyFireLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFireLoginService.swift; sourceTree = "<group>"; };
 		6A94D5D422A6EF8F0022BC02 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		6A94D5D722A77A2B0022BC02 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		6A94D5D922A83B5F0022BC02 /* MyFireDbService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFireDbService.swift; sourceTree = "<group>"; };
 		6AB00EC122A58F260032402D /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		6AB00EC322A590C30032402D /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
@@ -74,7 +71,6 @@
 		6AF2EF2222A09FFE00BBA7F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6AF2EF2A22A0B46400BBA7F0 /* RunDataSourceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunDataSourceController.swift; sourceTree = "<group>"; };
 		6AF2EF2E22A0FCBB00BBA7F0 /* RunHeaderFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunHeaderFooter.swift; sourceTree = "<group>"; };
-		6AF2EF3022A0FD2900BBA7F0 /* oldRunDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = oldRunDatasource.swift; sourceTree = "<group>"; };
 		6AF2EF3322A1DDBD00BBA7F0 /* Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		6AF2EF3522A1E3AF00BBA7F0 /* RunCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunCell.swift; sourceTree = "<group>"; };
 		E038DC064DCE52D5D56A33BC /* Pods-x181Run.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-x181Run.release.xcconfig"; path = "Target Support Files/Pods-x181Run/Pods-x181Run.release.xcconfig"; sourceTree = "<group>"; };
@@ -104,7 +100,6 @@
 		6A94D5D622A77A010022BC02 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				6A94D5D722A77A2B0022BC02 /* Service.swift */,
 				6A94D5D222A6E4150022BC02 /* MyFireLoginService.swift */,
 				6A94D5D922A83B5F0022BC02 /* MyFireDbService.swift */,
 				6A42FC8C22A8552900E771E5 /* MyFireCollectionRef.swift */,
@@ -152,7 +147,6 @@
 		6AF2EF2C22A0FC2300BBA7F0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6AF2EF3022A0FD2900BBA7F0 /* oldRunDatasource.swift */,
 				6AF2EF3322A1DDBD00BBA7F0 /* Run.swift */,
 				6A94D5D422A6EF8F0022BC02 /* User.swift */,
 				6A42FC9522A9E5E200E771E5 /* MyFireRunDataSource.swift */,
@@ -342,10 +336,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AF2EF3122A0FD2900BBA7F0 /* oldRunDatasource.swift in Sources */,
 				6A42FC9222A9D5C400E771E5 /* Encodable Extensions.swift in Sources */,
 				6AF2EF3422A1DDBD00BBA7F0 /* Run.swift in Sources */,
-				6A94D5D822A77A2B0022BC02 /* Service.swift in Sources */,
 				6A86B9E922AEDBF900FD2B9D /* RunDetailController+.swift in Sources */,
 				6AF2EF2B22A0B46400BBA7F0 /* RunDataSourceController.swift in Sources */,
 				6AB00EC422A590C30032402D /* MainNavigationController.swift in Sources */,

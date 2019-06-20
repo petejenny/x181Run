@@ -35,6 +35,7 @@ class RunDatasourceController: DatasourceController {
         MyFireDbService.sharedInstance.myRead(from: .runEvents, returning: Run.self) {(runs) in
             print("---------------set the datasource to the runs that have been read in")
             self.datasource = MyFireRunDataSource(runs: runs)
+            print("EVENT COUNT=",runs.count)
         }
     }
     

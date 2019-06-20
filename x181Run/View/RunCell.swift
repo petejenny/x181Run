@@ -22,6 +22,30 @@ class runCell: DatasourceCell {
             
             runTextView.text = run.eventLocation
             
+            if run.eventImage == "None" {
+                print("No eventImage: ", run.eventImage)
+                // Display the default image
+            } else {
+                print("We have an image: ", run.eventImage)
+                // get the actual image
+                let filename = run.eventImage  + ".jpg"
+                let downloadImageRef = myImageReference.child(filename)
+                let _ = downloadImageRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+                    if let data = data {
+                        let image = UIImage(data: data)
+                        //download completed
+                        self.medalImage.image = image
+                        //self.downloadImage.image = image
+                    }
+                    print(error ?? "NO ERROR")
+                }
+//
+//                downloadTask.observe(.progress) { (snapshot) in
+//                    print("Progress:",snapshot.progress ?? "NO MORE PROGRESS")
+//
+//                    downloadTask.resume()
+//                }
+            }
             //medalImage.image = run.medalImage
             
         }
@@ -85,6 +109,7 @@ class runCell: DatasourceCell {
         //runDetailController.myRunMode = .Read
         runDetailController.myRunMode = .Update
         runDetailController.myRun1 = thisRun
+        runDetailController.medalImage.image = medalImage.image
         //RunDetailController.myRunDateAsDate = fireDate2Date(fireDate: thisRun.eventDate)
         
         let myAppDelegate = UIApplication.shared.delegate as! AppDelegate

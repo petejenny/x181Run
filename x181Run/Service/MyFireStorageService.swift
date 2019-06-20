@@ -11,17 +11,24 @@ import Firebase
 
 struct MyFireStorageService {
     
+    //static let cache = NSCache<NSString, UIImage>()
+    
     static let sharedInstance = MyFireStorageService()
   
-    var myImageReference: StorageReference {
-        return Storage.storage().reference().child("/users/" + (Auth.auth().currentUser?.uid)! + "/events")
-    }
+
     
     func myFireImageUpload(myImage: UIImage, myImageRef: String) {
-        //guard let image = uploadImage.image else {return}
-        guard let myImageJpegData = myImage.jpegData(compressionQuality: 0.8) else {return}
+        
         
         let filename = myImageRef  + ".jpg"
+        
+        // Get the local documents directory for the application
+        //let imagePath = getDocumentsDirectory().appendingPathComponent(filename)
+        
+        // Save locally
+        guard let myImageJpegData = myImage.jpegData(compressionQuality: 0.8) else {return}
+        //try? myImageJpegData.write(to: imagePath)
+        
         let uploadImageRef = myImageReference.child(filename)
         
         let uploadTask = uploadImageRef.putData(myImageJpegData, metadata: nil) {(metadata, error) in
@@ -37,13 +44,15 @@ struct MyFireStorageService {
         uploadTask.resume()
     }
     
-    func myFireImageDownload(myImageRef: String) {
+    
+    static func myFireImageDownload(myImageRef: String) {
         
         let filename = myImageRef  + ".jpg"
         let downloadImageRef = myImageReference.child(filename)
         let downloadTask = downloadImageRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
             if let data = data {
                 let image = UIImage(data: data)
+                // download completed
                 //self.downloadImage.image = image
             }
             print(error ?? "NO ERROR")
@@ -55,5 +64,28 @@ struct MyFireStorageService {
             downloadTask.resume()
         }
     }
+    
+    // Used for storing files locally
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
+//    static func downloadImage(imageId: String, completion: @escaping (_ image: UIImage?) -> ()) {
+//        let filename = imageId  + ".jpg"
+//        //let downloadImageRef =
+//        //let downloadImageRef = myImageReference.child(filename)
+//
+//    }
+    
+//    static func getImage(imageId: String, completion: @escaping (_ image: UIImage?) -> ()) {
+//        let filename = imageId + ".jpg" as NSString
+//        if let image = cache.object(forKey: filename) {
+//            completion(image)
+//        } else {
+//            downloadImage(imageId: imageId, completion: completion)
+//        )
+//
+//    }
     
 }

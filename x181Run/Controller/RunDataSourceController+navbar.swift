@@ -45,6 +45,7 @@ extension RunDatasourceController {
         
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: addRunButton), UIBarButtonItem(customView: logoutButton)]
     }
+    
     @objc private func addRunButtonTapped() {
         print("addRunButtonTapped")
         
@@ -62,7 +63,6 @@ extension RunDatasourceController {
         
         let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
-        
     }
     
     private func setupRightNavItems() {
@@ -80,8 +80,8 @@ extension RunDatasourceController {
         userInfoButton.addTarget(self, action: #selector(userInfoButtonTapped), for: .touchUpInside)
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: searchButton), UIBarButtonItem(customView: userInfoButton)]
-        
     }
+    
     @objc private func searchButtonTapped(sender: UIButton) {
         print("searchButtonTapped",sender.tag)
         
