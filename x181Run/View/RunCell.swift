@@ -27,27 +27,22 @@ class runCell: DatasourceCell {
                 // Display the default image
             } else {
                 print("We have an image: ", run.eventImage)
-                // get the actual image
-                let filename = run.eventImage  + ".jpg"
-                let downloadImageRef = myImageReference.child(filename)
-                let _ = downloadImageRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
-                    if let data = data {
-                        let image = UIImage(data: data)
-                        //download completed
-                        self.medalImage.image = image
-                        //self.downloadImage.image = image
-                    }
-                    print(error ?? "NO ERROR")
+                MyFireStorageService.getImage(imageId: run.eventImage) { image in
+                    self.medalImage.image = image
                 }
-//
-//                downloadTask.observe(.progress) { (snapshot) in
-//                    print("Progress:",snapshot.progress ?? "NO MORE PROGRESS")
-//
-//                    downloadTask.resume()
+//                // get the actual image
+//                let filename = run.eventImage  + ".jpg"
+//                let downloadImageRef = myImageReference.child(filename)
+//                let _ = downloadImageRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+//                    if let data = data {
+//                        let image = UIImage(data: data)
+//                        //download completed
+//                        self.medalImage.image = image
+//                        //self.downloadImage.image = image
+//                    }
+//                    print(error ?? "NO ERROR")
 //                }
             }
-            //medalImage.image = run.medalImage
-            
         }
     }
     

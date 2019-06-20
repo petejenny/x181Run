@@ -11,11 +11,9 @@ import Firebase
 
 struct MyFireStorageService {
     
-    //static let cache = NSCache<NSString, UIImage>()
+    static let cache = NSCache<NSString, UIImage>()
     
     static let sharedInstance = MyFireStorageService()
-  
-
     
     func myFireImageUpload(myImage: UIImage, myImageRef: String) {
         
@@ -71,21 +69,36 @@ struct MyFireStorageService {
         return paths[0]
     }
     
-//    static func downloadImage(imageId: String, completion: @escaping (_ image: UIImage?) -> ()) {
-//        let filename = imageId  + ".jpg"
-//        //let downloadImageRef =
-//        //let downloadImageRef = myImageReference.child(filename)
-//
-//    }
+    static func downloadImage(imageId: String, completion: @escaping (_ image: UIImage?) -> ()) {
+        let filename = imageId  + ".jpg"
+        //let downloadImageRef =
+        let downloadImageRef = myImageReference.child(filename)
+        
+        // Download task
+        let _ = downloadImageRef.getData(maxSize: 1024 * 1024 * 12) { (data, error) in
+            if let data = data {
+                // We have data -> Therefore download has worked
+                let downloadedImage = UIImage(data: data)
+                
+                if downloadedImage != nil {
+                    cache.setObject(downloadedImage!, forKey: imageId as NSString)
+                }
+                
+                completion(downloadedImage)
+            }
+            print(error ?? "NO ERROR")
+        }
+        
+    }
     
-//    static func getImage(imageId: String, completion: @escaping (_ image: UIImage?) -> ()) {
-//        let filename = imageId + ".jpg" as NSString
-//        if let image = cache.object(forKey: filename) {
-//            completion(image)
-//        } else {
-//            downloadImage(imageId: imageId, completion: completion)
-//        )
-//
-//    }
+        static func getImage(imageId: String, completion: @escaping (_ image: UIImage?) -> ()) {
+    //        let filename = imageId + ".jpg" as NSString
+            if let image = cache.object(forKey: imageId as NSString) {
+                completion(image)
+            } else {
+                downloadImage(imageId: imageId, completion: completion)
+            }
+    //
+        }
     
 }
