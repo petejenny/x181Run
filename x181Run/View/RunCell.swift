@@ -48,7 +48,7 @@ class runCell: DatasourceCell {
     
     let medalImage: UIImageView  = {
         let imageView = UIImageView()
-        imageView.image = #imageLiteral(resourceName: "wildcatPeak")
+        imageView.image = #imageLiteral(resourceName: "cartoonRunner")
         imageView.layer.cornerRadius = 15
         imageView.layer.masksToBounds = true
         return imageView

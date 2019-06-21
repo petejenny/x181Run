@@ -11,6 +11,7 @@ import UIKit
 //let warningColor = UIColor(r: 61, g: 167, b: 244)
 let warningColor = UIColor(r: 255, g: 167, b: 167)
 
+
 class LeftPaddedTextField: UITextField {
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {

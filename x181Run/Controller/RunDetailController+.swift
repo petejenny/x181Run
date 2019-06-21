@@ -48,7 +48,6 @@ extension RunDetailController {
         formatter.dateFormat = dispDateFormat
         formatter.locale = Locale(identifier: "en_US_POSIX")
         
-        
         myRunDateAsDate = sender.date
         eventDateTextField.text = date2DisplayDate(myDate: myRunDateAsDate)
         //eventDateTextField.text = formatter.string(from: sender.date)
@@ -121,21 +120,13 @@ extension RunDetailController {
         mainNavigationController.viewControllers = [RunDatasourceController()]
         
         if imageUpdated {
-            // Get the documents directory for the application
-            let imagePath = getDocumentsDirectory().appendingPathComponent(eventImage)
-            
             MyFireStorageService.sharedInstance.myFireImageUpload(myImage: medalImage.image! , myImageRef: eventImage)
         }
-        
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc func cancelButtonTapped() {
         print("cancelButtonTapped")
-        
-//        // For debugging only
-//        let runDate: String = eventDateTextField.text ?? ""
-//        print("Run Date=",runDate)
         
         // Set the view controller back to the RunDatasourceController
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
@@ -145,7 +136,6 @@ extension RunDetailController {
         
         self.dismiss(animated: true, completion: nil)
     }
-    
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
@@ -161,7 +151,7 @@ extension RunDetailController {
         //imagePickerController.allowsEditing = true
         
         // only allow photos to be picked, not taken
-        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.sourceType = .savedPhotosAlbum  //.camera   //.photoLibrary
         
         // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self 
@@ -176,26 +166,13 @@ extension RunDetailController {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
         
-        // Get the filename
-//        if let asset = info[UIImagePickerControllerPHAsset] as? PHAsset {
-//            let resultResource = PHAssetResource.assetResources(for: asset)
-//            print("FILENAME=",resultResource.firs.value(forKey: "filename"))
-//        }
-
-
-        
-        // set photoImageView to display thee select image.
+        // Display the selected image.
         medalImage.image = selectedImage
         
         imageUpdated = true
         
         // Dismiss the picker.
         dismiss(animated: true, completion: nil)
-    }
-    
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
     }
 }
 

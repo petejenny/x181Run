@@ -11,6 +11,8 @@ import Firebase
 
 class UserDetailController: UIViewController {
     
+    var itemCount = 0
+    
     let logoImageView: UIImageView = {
         let image = UIImage(named: "cartoonRunner")
         let imageView = UIImageView(image: image)
@@ -93,6 +95,30 @@ class UserDetailController: UIViewController {
         return label
     } ()
     
+    let eventCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Event Count"
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textAlignment = NSTextAlignment.center
+        label.layer.cornerRadius = 8
+        label.layer.masksToBounds = true
+        label.layer.borderColor = UIColor.lightGray.cgColor
+        label.layer.borderWidth = 2
+        return label
+    } ()
+    
+    let eventCountValue: UILabel = {
+        let label = UILabel()
+        label.text = "Work In Progress"
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textAlignment = NSTextAlignment.center
+        label.layer.cornerRadius = 8
+        label.layer.masksToBounds = true
+        label.layer.borderColor = UIColor.lightGray.cgColor
+        label.layer.borderWidth = 2
+        label.backgroundColor = runLightYellowColor
+        return label
+    } ()
     
     lazy var okButton: UIButton = {
         let button = UIButton(type: .system)
@@ -133,20 +159,33 @@ class UserDetailController: UIViewController {
         view.addSubview(userNameValue)
         view.addSubview(userIdLabel)
         view.addSubview(userIdValue)
+        view.addSubview(eventCountLabel)
+        view.addSubview(eventCountValue)
         view.addSubview(okButton)
         
         
         view.addSubview(logoImageView)
         
-        userEmailLabel.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        userEmailValue.anchor(userEmailLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 6, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        userNameLabel.anchor(userEmailValue.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        userNameValue.anchor(userNameLabel.bottomAnchor, left: userEmailLabel.leftAnchor, bottom: nil, right: userEmailLabel.rightAnchor, topConstant: 6, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
-        userIdLabel.anchor(userNameValue.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        userIdValue.anchor(userIdLabel.bottomAnchor, left: userEmailLabel.leftAnchor, bottom: nil, right: userEmailLabel.rightAnchor, topConstant: 6, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
-        okButton.anchor(userIdValue.bottomAnchor, left: userEmailLabel.leftAnchor, bottom: nil, right: userEmailLabel.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
+        let gap: CGFloat = 12
+        let labelWidth: CGFloat = 100
         
-        logoImageView.anchor(okButton.bottomAnchor, left: userEmailLabel.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: userEmailLabel.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        userEmailLabel.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: gap, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: labelWidth, heightConstant: 40)
+        userEmailValue.anchor(view.safeAreaLayoutGuide.topAnchor, left: userEmailLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: gap, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: 0, heightConstant: 40)
+        
+        userNameLabel.anchor(userEmailValue.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: labelWidth, heightConstant: 40)
+        userNameValue.anchor(userEmailValue.bottomAnchor, left: userEmailLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: gap, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: 0, heightConstant: 40)
+        
+        userIdLabel.anchor(userNameValue.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: labelWidth, heightConstant: 40)
+        userIdValue.anchor(userNameValue.bottomAnchor, left: userEmailLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: gap, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: 0, heightConstant: 40)
+      
+        eventCountLabel.anchor(userIdValue.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: labelWidth, heightConstant: 40)
+        eventCountValue.anchor(userIdValue.bottomAnchor, left: userEmailLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: gap, leftConstant: gap, bottomConstant: 0, rightConstant: gap, widthConstant: 0, heightConstant: 40)
+        
+        okButton.anchor(eventCountValue.bottomAnchor, left: userEmailLabel.leftAnchor, bottom: nil, right: userEmailLabel.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
+        
+        logoImageView.anchor(okButton.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        
+        eventCountValue.text = itemCount.description
     }
     
 }

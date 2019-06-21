@@ -57,8 +57,6 @@ extension RunDatasourceController {
     @objc private func logoutButtonTapped() {
         print("logoutButtonTapped")
         
-        //UserDefaults.standard.setIsLoggedIn(value: false)
-        
         MyFireLoginService.sharedInstance.logout(vc: self)
         
         let loginController = LoginController()
@@ -92,8 +90,11 @@ extension RunDatasourceController {
     
     @objc private func userInfoButtonTapped(sender: UIButton) {
         print("userInfoButtonTapped",sender.tag)
+        let itemCount = self.datasource?.numberOfItems(1)
         
         let userDetailController = UserDetailController()
+        userDetailController.itemCount = itemCount ?? 0
+        
         present(userDetailController, animated: true, completion: nil)
     }
 }

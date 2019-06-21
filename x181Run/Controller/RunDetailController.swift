@@ -16,19 +16,22 @@ class RunDetailController: UIViewController, UIImagePickerControllerDelegate, UI
     var myRunDateAsDate: Date = Date()
     var imageUpdated: Bool = false
     
-//    let logoImageView: UIImageView = {
-//        let image = UIImage(named: "cartoonRunner")
-//        let imageView = UIImageView(image: image)
-//        imageView.contentMode = .scaleAspectFit
-//        return imageView
-//    }()
-    
     let logoImageView: CachedImageView = {
         let imageView = CachedImageView()
         imageView.image = #imageLiteral(resourceName: "cartoonRunner")
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
+    
+//    let eventTitleLabel UILab = {
+//        let textField = LeftPaddedTextField()
+//        textField.placeholder = "Event Title"
+//        textField.layer.borderColor = UIColor.lightGray.cgColor
+//        textField.layer.borderWidth = 1
+//        //textField.keyboardType = .
+//        textField.backgroundColor = .white
+//        return textField
+//    }()
     
     let eventTitleTextField: LeftPaddedTextField = {
         let textField = LeftPaddedTextField()
@@ -78,30 +81,13 @@ class RunDetailController: UIViewController, UIImagePickerControllerDelegate, UI
         return button
     }()
     
-//    let medalImage: UIImageView  = {
-//        let imageView = UIImageView()
-//        imageView.image = #imageLiteral(resourceName: "wildcatPeak")
-//        imageView.layer.cornerRadius = 15
-//        imageView.layer.masksToBounds = true
-//        return imageView
-//    } ()
-    
     let medalImage: CachedImageView  = {
         let imageView = CachedImageView()
-        imageView.image = #imageLiteral(resourceName: "wildcatPeak")
+        imageView.image = #imageLiteral(resourceName: "addIcon")
         imageView.layer.cornerRadius = 15
         imageView.layer.masksToBounds = true
         return imageView
     } ()
-    
-    //    let profileImageView: CachedImageView = {
-    //        let imageView = CachedImageView()
-    //        imageView.image = #imageLiteral(resourceName: "profile_image")
-    //        //imageView.backgroundColor = .red
-    //        imageView.layer.cornerRadius = 5
-    //        imageView.layer.masksToBounds = true
-    //        return imageView
-    //    }()
     
     lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)

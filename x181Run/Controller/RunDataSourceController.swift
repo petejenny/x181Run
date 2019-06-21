@@ -36,6 +36,7 @@ class RunDatasourceController: DatasourceController {
             print("---------------set the datasource to the runs that have been read in")
             self.datasource = MyFireRunDataSource(runs: runs)
             print("EVENT COUNT=",runs.count)
+            playSound()
         }
     }
     
