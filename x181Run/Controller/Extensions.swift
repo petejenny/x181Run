@@ -9,8 +9,13 @@ import Foundation
 import UIKit
 
 //let warningColor = UIColor(r: 61, g: 167, b: 244)
-let warningColor = UIColor(r: 255, g: 167, b: 167)
+//let warningColor = UIColor(r: 255, g: 167, b: 167)
+let lightYellow = UIColor(r: 255, g: 255, b: 204)
 
+enum myColors {
+    static let warningColor = UIColor(r: 255, g: 167, b: 167)
+    static let lightYellow = UIColor(r: 255, g: 255, b: 204)
+}
 
 class LeftPaddedTextField: UITextField {
     
@@ -21,7 +26,6 @@ class LeftPaddedTextField: UITextField {
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return CGRect(x: bounds.origin.x + 10, y: bounds.origin.y, width: bounds.width + 10, height: bounds.height)
     }
-    
 }
 
 extension UIViewController {
@@ -64,7 +68,6 @@ extension String {
         
         return date
     }
-    
 }
 
 extension Date {
@@ -92,8 +95,6 @@ extension Date {
         dateFormatter.dateStyle = .short
         dateFormatter.dateFormat = "yyy-MMM-dd"
         
-        
         return dateFormatter.string(from: Date())
     }
-    
 }

@@ -23,54 +23,22 @@ class RunDetailController: UIViewController, UIImagePickerControllerDelegate, UI
         return imageView
     }()
     
-//    let eventTitleLabel UILab = {
-//        let textField = LeftPaddedTextField()
-//        textField.placeholder = "Event Title"
-//        textField.layer.borderColor = UIColor.lightGray.cgColor
-//        textField.layer.borderWidth = 1
-//        //textField.keyboardType = .
-//        textField.backgroundColor = .white
-//        return textField
-//    }()
+    let eventTitleLabel =   labelHelper(labelText: "Title")
+    let eventTitleTextField = textHelper(placeHolderText: "Event Title")
     
-    let eventTitleTextField: LeftPaddedTextField = {
-        let textField = LeftPaddedTextField()
-        textField.placeholder = "Event Title"
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.borderWidth = 1
-        //textField.keyboardType = .
-        textField.backgroundColor = .white
-        return textField
-    }()
+    let eventDateLabel = labelHelper(labelText: "Date")
+
+    let eventDateTextField: LeftPaddedTextField = textHelper(placeHolderText: "Event Date")
     
-    let eventDateTextField: LeftPaddedTextField = {
-        let textField = LeftPaddedTextField()
-        textField.placeholder = "Event Date"
-        //textField.datePickerMode = .date
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.borderWidth = 1
-        textField.backgroundColor = .white
-        return textField
-    }()
+    let eventLocationLabel = labelHelper(labelText: "Location")
+    let eventLocationTextField = textHelper(placeHolderText: "Event Location")
+ 
     
-    let eventLocationTextField: LeftPaddedTextField = {
-        let textField = LeftPaddedTextField()
-        textField.placeholder = "Event Location"
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.borderWidth = 1
-        textField.backgroundColor = .white
-        return textField
-    }()
+    let eventDistanceLabel = labelHelper(labelText: "Distance")
+    let eventDistanceTextField = textHelper(placeHolderText: "Event Distance")
     
-    let eventDistanceTextField: LeftPaddedTextField = {
-        let textField = LeftPaddedTextField()
-        textField.placeholder = "Event Distance"
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.borderWidth = 1
-        textField.backgroundColor = .white
-        textField.keyboardType = .emailAddress
-        return textField
-    }()
+    let finalTimeLabel = labelHelper(labelText: "Final Time")
+    let finalTimeTextField = textHelper(placeHolderText: "Final Time")
     
     lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
@@ -141,10 +109,21 @@ class RunDetailController: UIViewController, UIImagePickerControllerDelegate, UI
         medalImage.isUserInteractionEnabled = true
         medalImage.addGestureRecognizer(tapGestureRecognizer)
         
+        view.addSubview(eventTitleLabel)
         view.addSubview(eventTitleTextField)
+        
+        view.addSubview(eventDateLabel)
         view.addSubview(eventDateTextField)
+        
+        view.addSubview(eventLocationLabel)
         view.addSubview(eventLocationTextField)
+        
+        view.addSubview(eventDistanceLabel)
         view.addSubview(eventDistanceTextField)
+        
+        view.addSubview(finalTimeLabel)
+        view.addSubview(finalTimeTextField)
+        
         view.addSubview(medalImage)
         
         view.addSubview(actionButton)
@@ -178,13 +157,22 @@ class RunDetailController: UIViewController, UIImagePickerControllerDelegate, UI
         
         dateSetupDatePicker()
         
+        eventTitleLabel.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 100, heightConstant: 40)
+        eventTitleTextField.anchor(view.safeAreaLayoutGuide.topAnchor, left: eventTitleLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
 
+        eventDateLabel.anchor(eventTitleTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 100, heightConstant: 40)
+        eventDateTextField.anchor(eventTitleTextField.bottomAnchor, left: eventTitleLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
         
-        eventTitleTextField.anchor(view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        eventDateTextField.anchor(eventTitleTextField.bottomAnchor, left: eventTitleTextField.leftAnchor, bottom: nil, right: eventTitleTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
-        eventLocationTextField.anchor(eventDateTextField.bottomAnchor, left: eventTitleTextField.leftAnchor, bottom: nil, right: eventTitleTextField.rightAnchor, topConstant: 12, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 40)
-        eventDistanceTextField.anchor(eventLocationTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 24, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
-        medalImage.anchor(eventDistanceTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 24, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 150)
+        eventLocationLabel.anchor(eventDateTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 100, heightConstant: 40)
+        eventLocationTextField.anchor(eventDateTextField.bottomAnchor, left: eventTitleLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
+        
+        eventDistanceLabel.anchor(eventLocationTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 100, heightConstant: 40)
+        eventDistanceTextField.anchor(eventLocationTextField.bottomAnchor, left: eventTitleLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
+        
+        finalTimeLabel.anchor(eventDistanceTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 100, heightConstant: 40)
+        finalTimeTextField.anchor(eventDistanceTextField.bottomAnchor, left: eventTitleLabel.rightAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)
+        
+        medalImage.anchor(finalTimeTextField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 24, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 150)
         
         
         actionButton.anchor(medalImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 12, leftConstant: 12, bottomConstant: 0, rightConstant: 12, widthConstant: 0, heightConstant: 40)

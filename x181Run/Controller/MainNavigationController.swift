@@ -32,7 +32,6 @@ class MainNavigationController: UINavigationController {
         
         return UserDefaults.standard.isLoggedIn()
     }
-
     
     @objc func showLoginController() {
         let loginController = LoginController()
@@ -41,5 +40,4 @@ class MainNavigationController: UINavigationController {
             print("Completed login process")
         })
     }
-    
 }

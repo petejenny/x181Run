@@ -20,17 +20,7 @@ class UserDetailController: UIViewController {
         return imageView
     }()
  
-    let userEmailLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Email"
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = NSTextAlignment.center
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.borderWidth = 2
-        return label
-    } ()
+    let userEmailLabel = labelHelper(labelText: "Email")
     
     let userEmailValue: UILabel = {
         let label = UILabel()
@@ -45,80 +35,14 @@ class UserDetailController: UIViewController {
         return label
     }()
     
-    let userNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Username"
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = NSTextAlignment.center
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.borderWidth = 2
-        return label
-    } ()
+    let userNameLabel = labelHelper(labelText: "Username")
+    let userNameValue = labelValueHelper(labelText: Auth.auth().currentUser!.displayName!)
     
-    let userNameValue: UILabel = {
-        let label = UILabel()
-        label.text = Auth.auth().currentUser?.displayName
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = NSTextAlignment.center
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.borderWidth = 2
-        label.backgroundColor = runLightYellowColor
-        return label
-    } ()
-    
-    let userIdLabel: UILabel = {
-        let label = UILabel()
-        label.text = "User ID"
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = NSTextAlignment.center
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.borderWidth = 2
-        return label
-    } ()
-    
-    let userIdValue: UILabel = {
-        let label = UILabel()
-        label.text = Auth.auth().currentUser?.uid
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = NSTextAlignment.center
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.borderWidth = 2
-        label.backgroundColor = runLightYellowColor
-        return label
-    } ()
-    
-    let eventCountLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Event Count"
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = NSTextAlignment.center
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.borderWidth = 2
-        return label
-    } ()
-    
-    let eventCountValue: UILabel = {
-        let label = UILabel()
-        label.text = "Work In Progress"
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = NSTextAlignment.center
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.borderWidth = 2
-        label.backgroundColor = runLightYellowColor
-        return label
-    } ()
+    let userIdLabel = labelHelper(labelText: "User ID")
+    let userIdValue = labelValueHelper(labelText: (Auth.auth().currentUser?.uid)!)
+  
+    let eventCountLabel = labelHelper(labelText: "Event Count")
+    let eventCountValue = labelValueHelper(labelText: "Work In Progress")
     
     lazy var okButton: UIButton = {
         let button = UIButton(type: .system)

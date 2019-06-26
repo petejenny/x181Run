@@ -129,7 +129,7 @@ class LoginController: UIViewController {
         guard let username = signupUsernameTextField.text, username != ""
             else {
                 signupUsernameTextField.becomeFirstResponder()
-                signupUsernameTextField.backgroundColor =  warningColor
+                signupUsernameTextField.backgroundColor =  myColors.warningColor
                 AlertController.showAlert(inViewController: self, title: "Signup: Missing Info", message: "Please fill out SIgn Up fields")
                 return
         }
@@ -138,7 +138,7 @@ class LoginController: UIViewController {
         guard let email = signupEmailTextField.text, email != ""
             else {
                 signupEmailTextField.becomeFirstResponder()
-                signupEmailTextField.backgroundColor =  warningColor
+                signupEmailTextField.backgroundColor =  myColors.warningColor
                 AlertController.showAlert(inViewController: self, title: "Signup: Missing Info", message: "Please fill out SIgn Up fields")
                 return
         }
@@ -147,7 +147,7 @@ class LoginController: UIViewController {
         guard let password = signupPasswordTextField.text, password != ""
             else {
                 signupPasswordTextField.becomeFirstResponder()
-                signupPasswordTextField.backgroundColor =  warningColor
+                signupPasswordTextField.backgroundColor =  myColors.warningColor
                 AlertController.showAlert(inViewController: self, title: "Signup: Missing Info", message: "Please fill out SIgn Up fields")
                 return
         }
@@ -156,7 +156,7 @@ class LoginController: UIViewController {
         guard let verify = signupVerifyTextField.text, verify != ""
             else {
                 signupVerifyTextField.becomeFirstResponder()
-                signupVerifyTextField.backgroundColor =  warningColor
+                signupVerifyTextField.backgroundColor =  myColors.warningColor
                 AlertController.showAlert(inViewController: self, title: "Signup: Missing Info", message: "Please fill out SIgn Up fields")
                 return
         }
@@ -164,8 +164,8 @@ class LoginController: UIViewController {
         
         if password != verify {
             signupPasswordTextField.becomeFirstResponder()
-            signupPasswordTextField.backgroundColor = warningColor
-            signupVerifyTextField.backgroundColor =  warningColor
+            signupPasswordTextField.backgroundColor = myColors.warningColor
+            signupVerifyTextField.backgroundColor =  myColors.warningColor
             AlertController.showAlert(inViewController: self, title: "Signup: Incorrect Info", message: "Passwords do not match")
             return
         }
